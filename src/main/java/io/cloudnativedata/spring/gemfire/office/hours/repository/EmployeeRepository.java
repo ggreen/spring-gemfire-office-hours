@@ -6,13 +6,21 @@ import org.springframework.data.gemfire.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Repository
 public interface EmployeeRepository extends GemfireRepository<Employee, String> {
 
-    // Case-insensitive version
-    Iterable<Employee> findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(String firstName, String lastName);
+    List<Employee> findByDept(String dept);
 
-    @Query("SELECT u FROM Employee u WHERE u.firstName LIKE %:firstName% AND u.lastName LIKE %:lastName%")
-    Iterable<Employee> searchByNames(@Param("firstName") String firstName, @Param("lastName") String lastName);
+    // Case-insensitive
+    Iterable<Employee> findByFirstNameContainingAndLastNameContaining(String firstName, String lastName);
 
+    @Query("SELECT u FROM /Employee u WHERE salary > $1")
+    Iterable<Employee> searchBySalaryGreaterThan(BigDecimal salary);
+
+
+    @Query("SELECT AVG(salary) FROM /Employee")
+    double averageSalary();
 }
