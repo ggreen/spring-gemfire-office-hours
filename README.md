@@ -3,13 +3,10 @@
 start gemfire
 
 ```shell
-deployment/scripts/start-gemfire-external-clients.sh
+deployment/scripts/start-gemfire-containers.sh
 ```
 
 or 
-
-
-
 
 ```shell
 deployment/scripts/start-local.sh
