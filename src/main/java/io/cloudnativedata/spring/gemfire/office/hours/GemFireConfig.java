@@ -1,5 +1,6 @@
 package io.cloudnativedata.spring.gemfire.office.hours;
 
+import dev.gemfire.dtype.DTypeFactory;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Country;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Job;
@@ -10,12 +11,16 @@ import nyla.solutions.core.io.csv.CsvReader;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.pdx.PdxSerializer;
+import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnableContinuousQueries;
+import dev.gemfire.dtype.DAtomicLong;
+import org.springframework.data.gemfire.config.annotation.EnablePdx;
 
 import java.math.BigDecimal;
 import java.nio.file.Paths;
@@ -23,12 +28,18 @@ import java.util.ArrayList;
 
 import static java.lang.String.valueOf;
 
-
 @Configuration
 @ClientCacheApplication(subscriptionEnabled = true)
 @EnableContinuousQueries
 @Slf4j
+@EnablePdx(serializerBeanName="employSerializer")
 public class GemFireConfig {
+
+    @Bean
+    PdxSerializer employSerializer()
+    {
+        return new ReflectionBasedAutoSerializer(Employee.class.getPackageName()+"..*");
+    }
 
     @Bean
     ClientRegionFactoryBean<String, Employee> employeeRegion(ClientCache cache) {
@@ -147,7 +158,7 @@ public class GemFireConfig {
     }
 
 
-    @Bean
+    //    @Bean
     ApplicationRunner makeMillionaire(EmployeeRepository employeeRepository) {
 
         return args -> {
@@ -181,4 +192,35 @@ public class GemFireConfig {
         };
     }
 
+    @Bean
+    ApplicationRunner distributedTypes(ClientCache clientCache, EmployeeRepository employeeRepository) {
+
+        return args -> {
+
+            var factory = new DTypeFactory(clientCache);
+
+            DAtomicLong empSeq = factory.createDAtomicLong("EmpSeq");
+            var empId = String.valueOf(empSeq.getAndAdd(1));
+
+            var emp1 = JavaBeanGeneratorCreator.of(Employee.class).create();
+            emp1.setId(empId);
+
+            log.info("Emp ID: {}", emp1.getId());
+            employeeRepository.save(emp1);
+
+            var emp2 = JavaBeanGeneratorCreator.of(Employee.class).create();
+            empId = String.valueOf(empSeq.getAndAdd(1));
+            emp2.setId(empId);
+            log.info("Emp ID: {}", emp2.getId());
+            employeeRepository.save(emp2);
+
+
+            log.info("Emp 1: {} \n\n\n Emp 2: {}",
+                    employeeRepository.findById(emp1.getId()),
+                    employeeRepository.findById(emp2.getId()));
+
+        };
+    }
+
 }
+

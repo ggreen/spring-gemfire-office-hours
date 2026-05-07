@@ -12,8 +12,7 @@ or
 
 
 ```shell
-start locator --name=locator --initial-heap=1g --max-heap=1g
-start server --name=server1 --initial-heap=5g --max-heap=5g
+deployment/scripts/start-local.sh
 ```
 
 
