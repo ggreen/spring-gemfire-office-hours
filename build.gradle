@@ -31,6 +31,7 @@ dependencies {
 
 	implementation "com.vmware.gemfire:spring-boot-4.0-gemfire-10.2:$springBootForGemFireVersion"
 	implementation "com.vmware.gemfire:gemfire-core:$vmwareGemFireVersion"
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 
 	implementation 'com.github.nyla-solutions:nyla.solutions.core:2.5.1'
 	// if using continuous queries

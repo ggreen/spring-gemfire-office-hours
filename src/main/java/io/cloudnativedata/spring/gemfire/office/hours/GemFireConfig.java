@@ -14,6 +14,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
+import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
+import org.springframework.data.gemfire.config.annotation.EnableContinuousQueries;
 
 import java.math.BigDecimal;
 import java.nio.file.Paths;
@@ -23,11 +25,13 @@ import static java.lang.String.valueOf;
 
 
 @Configuration
+@ClientCacheApplication(subscriptionEnabled = true)
+@EnableContinuousQueries
 @Slf4j
 public class GemFireConfig {
 
     @Bean
-    ClientRegionFactoryBean<String, Employee> employeeRegion(ClientCache cache){
+    ClientRegionFactoryBean<String, Employee> employeeRegion(ClientCache cache) {
         var regionBean = new ClientRegionFactoryBean<String, Employee>();
         regionBean.setCache(cache);
         regionBean.setName("Employee");
@@ -35,7 +39,7 @@ public class GemFireConfig {
         return regionBean;
     }
 
-//    @Bean
+    //    @Bean
     ApplicationRunner applicationRunner(EmployeeRepository employeeRepository) {
         return args -> {
             var emp = JavaBeanGeneratorCreator.of(Employee.class).create();
@@ -48,7 +52,7 @@ public class GemFireConfig {
         };
     }
 
-//    @Bean
+    //    @Bean
     ApplicationRunner perfTest(EmployeeRepository employeeRepository) {
         return args -> {
             var count = 10000;
@@ -64,7 +68,7 @@ public class GemFireConfig {
             employeeRepository.saveAll(list);
             var end = System.currentTimeMillis();
 
-            var timing = (end - start)/(count*1.0);
+            var timing = (end - start) / (count * 1.0);
             log.info("!!!!! writes per millisecond: {}", timing);
 
             start = System.currentTimeMillis();
@@ -72,62 +76,62 @@ public class GemFireConfig {
                 emp = employeeRepository.findById(String.valueOf(i)).get();
             }
             end = System.currentTimeMillis();
-            timing = (end - start)/(count*1.0);
+            timing = (end - start) / (count * 1.0);
             log.info("!!!!! read per millisecond: {}", timing);
 
         };
     }
 
-//    @Bean
+    //    @Bean
     ApplicationRunner loadData(EmployeeRepository employeeRepository) {
         return args -> {
 
             var csvReader = new CsvReader(Paths.get("src/test/resources/csv/employee.csv").toFile());
-            for(var line :csvReader){
+            for (var line : csvReader) {
 
-                var i =0;
+                var i = 0;
                 var builder = Employee.builder();
                 builder.id(line.get(i++));
 
-                        builder.firstName(line.get(i++));
-                        builder.lastName(line.get(i++));
-                        builder.email(line.get(i++));
-                        builder.hireDate(Long.parseLong(line.get(i++)));
-                        builder.dept(line.get(i++));
-                        var jobBuilder = Job.builder();
-                        jobBuilder.id(line.get(i++));
-                        jobBuilder.title(line.get(i++));
-                        builder.job(jobBuilder.build());
+                builder.firstName(line.get(i++));
+                builder.lastName(line.get(i++));
+                builder.email(line.get(i++));
+                builder.hireDate(Long.parseLong(line.get(i++)));
+                builder.dept(line.get(i++));
+                var jobBuilder = Job.builder();
+                jobBuilder.id(line.get(i++));
+                jobBuilder.title(line.get(i++));
+                builder.job(jobBuilder.build());
 
-                        var locationBuilder = Location.builder();
+                var locationBuilder = Location.builder();
 
-                        locationBuilder.id(line.get(i++));
-                        locationBuilder.city(line.get(i++));
-                        locationBuilder.state(line.get(i++));
-                        builder.location(locationBuilder.build());
+                locationBuilder.id(line.get(i++));
+                locationBuilder.city(line.get(i++));
+                locationBuilder.state(line.get(i++));
+                builder.location(locationBuilder.build());
 
-                        var countryBuilder = Country.builder();
+                var countryBuilder = Country.builder();
 
-                        countryBuilder.code(line.get(i++));
-                        countryBuilder.name(line.get(i++));
-                        locationBuilder.country(countryBuilder.build());
+                countryBuilder.code(line.get(i++));
+                countryBuilder.name(line.get(i++));
+                locationBuilder.country(countryBuilder.build());
 
-                        builder.location(locationBuilder.build());
-                        builder.salary( new BigDecimal(line.get(i++)));
-                        builder.notes(line.get(i++));
+                builder.location(locationBuilder.build());
+                builder.salary(new BigDecimal(line.get(i++)));
+                builder.notes(line.get(i++));
 
-                        var emp = builder.build();
+                var emp = builder.build();
 
-                        log.info("SAVING  emp: {}", emp);
+                log.info("SAVING  emp: {}", emp);
 
-                        employeeRepository.save(emp);
+                employeeRepository.save(emp);
             }
 
         };
     }
 
 
-    @Bean
+    //    @Bean
     ApplicationRunner query(EmployeeRepository employeeRepository) {
 
         return args -> {
@@ -139,6 +143,41 @@ public class GemFireConfig {
 
             var results = employeeRepository.averageSalary();
             log.info("results {} ", results);
+        };
+    }
+
+
+    @Bean
+    ApplicationRunner makeMillionaire(EmployeeRepository employeeRepository) {
+
+        return args -> {
+
+            var rich = Employee.builder()
+                    .id("rich").firstName("Richie").lastName("Rich")
+                    .email("rich@rich.com")
+                    .dept("rich").hireDate(System.currentTimeMillis())
+                    .location(
+                            Location.builder()
+                                    .id("dreamLand")
+                                    .zipCode("12345")
+                                    .state("NYC")
+                                    .state("NY")
+                                    .country(Country.builder().name("US")
+                                            .name("United States").build())
+                                    .build())
+                    .job(
+                            Job.builder()
+                                    .title("Big Shot")
+                                    .id("top").build()
+                    ).salary(BigDecimal.valueOf(2000000L))
+                    .notes("Must be nice")
+                    .build();
+
+
+            Thread.sleep(10000);
+            employeeRepository.save(rich);
+
+            log.info("Saved rich employee {}", rich);
         };
     }
 
