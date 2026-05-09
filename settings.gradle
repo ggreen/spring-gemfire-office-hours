@@ -1,1 +1,3 @@
 rootProject.name = 'spring-gemfire-office-hours'
+include 'components', 'components:server:demo-functions'
+include 'components', 'applications:demo-app'

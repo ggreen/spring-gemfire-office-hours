@@ -1,0 +1,81 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.6'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'io.cloudnativedata'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springAiVersion', "2.0.0-M5")
+	springBootForGemFireVersion = '2.0.0'
+	vmwareGemFireVersion = '10.2.0'
+}
+
+dependencies {
+	implementation "com.vmware.gemfire:spring-boot-4.0-gemfire-10.2:$springBootForGemFireVersion"
+	implementation "com.vmware.gemfire:gemfire-core:$vmwareGemFireVersion"
+	// if using continuous queries
+	implementation "com.vmware.gemfire:gemfire-cq:$vmwareGemFireVersion"
+
+	implementation "com.vmware.gemfire:spring-boot-4.0-gemfire-10.2:$springBootForGemFireVersion"
+	implementation "com.vmware.gemfire:gemfire-core:$vmwareGemFireVersion"
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+	implementation 'com.github.nyla-solutions:nyla.solutions.core:2.5.1'
+	// if using continuous queries
+	implementation "com.vmware.gemfire:gemfire-cq:$vmwareGemFireVersion"
+
+	implementation 'dev.gemfire:gemfire-distributed-types:1.0.0'
+}
+
+dependencies {
+//	implementation 'org.springframework.ai:spring-ai-starter-vector-store-gemfire'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testCompileOnly 'org.projectlombok:lombok'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+	maven {
+		url "https://packages.broadcom.com/artifactory/gemfire/"
+		metadataSources {
+			mavenPom()
+			artifact()
+			ignoreGradleMetadataRedirection()
+		}
+		credentials {
+			credentials {
+				username System.getenv('BROADCOM_MAVEN_USERNAME')
+				password System.getenv('BROADCOM_GEMFIRE_MAVEN_PASSWORD')
+			}
+		}
+	}
+}
