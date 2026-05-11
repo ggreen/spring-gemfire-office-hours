@@ -17,7 +17,7 @@ import static java.lang.String.valueOf;
 public class GenerateEmployeesCsv {
 
 
-    @Test
+//    @Test
     void generateCsv() {
         int count = 10000;
         var results = JavaBeanGeneratorCreator.of(Employee.class).createCollection(count);
