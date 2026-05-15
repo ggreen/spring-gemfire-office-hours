@@ -13,6 +13,6 @@ public class SalaryAlertListener {
     public void process(CqEvent event) {
 
       var results =  event.getNewValue();
-      log.info("results {} ", results);
+      log.info("******* SALARY over 1 MILLION !!!  {} ", results);
     }
 }

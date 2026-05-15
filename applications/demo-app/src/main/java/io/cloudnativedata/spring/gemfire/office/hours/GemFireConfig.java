@@ -90,11 +90,11 @@ public class GemFireConfig {
         };
     }
 
-    //    @Bean
+//        @Bean
     ApplicationRunner loadData(EmployeeRepository employeeRepository) {
         return args -> {
 
-            var csvReader = new CsvReader(Paths.get("src/test/resources/csv/employee.csv").toFile());
+            var csvReader = new CsvReader(Paths.get("applications/demo-app/src/test/resources/csv/employee.csv").toFile());
             for (var line : csvReader) {
 
                 var i = 0;
@@ -126,24 +126,23 @@ public class GemFireConfig {
 
                 var emp = builder.build();
 
-                log.info("SAVING  emp: {}", emp);
-
                 employeeRepository.save(emp);
             }
+
+            log.info("Loaded employee data");
 
         };
     }
 
 
-    //    @Bean
+//        @Bean
     ApplicationRunner query(EmployeeRepository employeeRepository) {
 
         return args -> {
 
-//            var list = employeeRepository.findByFirstNameContainingAndLastNameContaining("Jaime","Stanley");
-//            var list = employeeRepository.searchByNames("Jaime","Stanley");
+//            var results = employeeRepository.findByFirstNameContainingAndLastNameContaining("J","Mar");
 
-//            var list = employeeRepository.searchBySalaryGreaterThan(BigDecimal.valueOf(1000000));
+//            var results = employeeRepository.searchBySalaryGreaterThan(BigDecimal.valueOf(1000000));
 
             var results = employeeRepository.averageSalary();
             log.info("results {} ", results);
@@ -151,7 +150,7 @@ public class GemFireConfig {
     }
 
 
-    //    @Bean
+        @Bean
     ApplicationRunner makeMillionaire(EmployeeRepository employeeRepository) {
 
         return args -> {
@@ -182,7 +181,7 @@ public class GemFireConfig {
         };
     }
 
-    @Bean
+//    @Bean
     ApplicationRunner distributedTypes(ClientCache clientCache, EmployeeRepository employeeRepository) {
 
         return args -> {
