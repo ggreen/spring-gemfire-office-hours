@@ -5,11 +5,8 @@ import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
 import nyla.solutions.core.io.csv.CsvWriter;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import nyla.solutions.core.util.Digits;
-import nyla.solutions.core.util.Text;
-import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static java.lang.String.valueOf;
@@ -37,8 +34,7 @@ public class GenerateEmployeesCsv {
                     employee.getEmail(),
                     valueOf(employee.getHireDate()),
                     employee.getDept(),
-                    employee.getJob().getId(),
-                    employee.getJob().getTitle(),
+                    employee.getJobTitle(),
                     employee.getLocation().getId(),
                     employee.getLocation().getCity(),
                     employee.getLocation().getState(),
@@ -47,7 +43,6 @@ public class GenerateEmployeesCsv {
                     valueOf(employee.getSalary()),
                     employee.getNotes()
                     );
-
             i++;
         }
     }

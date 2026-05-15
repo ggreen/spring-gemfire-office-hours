@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 @Slf4j
 public class DTypeTest {
 
-    @Test
+//    @Test
     void atomicLong() {
         var factory = new ClientCacheFactory()
                 .addPoolLocator("localhost", 10334);

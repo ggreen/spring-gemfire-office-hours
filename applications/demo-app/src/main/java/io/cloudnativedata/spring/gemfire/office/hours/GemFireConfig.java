@@ -1,9 +1,9 @@
 package io.cloudnativedata.spring.gemfire.office.hours;
 
+import dev.gemfire.dtype.DAtomicLong;
 import dev.gemfire.dtype.DTypeFactory;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Country;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
-import io.cloudnativedata.spring.gemfire.office.hours.domain.Job;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Location;
 import io.cloudnativedata.spring.gemfire.office.hours.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +19,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnableContinuousQueries;
-import dev.gemfire.dtype.DAtomicLong;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
 
 import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
-import static java.lang.String.valueOf;
 
 @Configuration
 @ClientCacheApplication(subscriptionEnabled = true)
@@ -109,11 +106,7 @@ public class GemFireConfig {
                 builder.email(line.get(i++));
                 builder.hireDate(Long.parseLong(line.get(i++)));
                 builder.dept(line.get(i++));
-                var jobBuilder = Job.builder();
-                jobBuilder.id(line.get(i++));
-                jobBuilder.title(line.get(i++));
-                builder.job(jobBuilder.build());
-
+                builder.jobTitle(line.get(i++));
                 var locationBuilder = Location.builder();
 
                 locationBuilder.id(line.get(i++));
@@ -176,11 +169,8 @@ public class GemFireConfig {
                                     .country(Country.builder().name("US")
                                             .name("United States").build())
                                     .build())
-                    .job(
-                            Job.builder()
-                                    .title("Big Shot")
-                                    .id("top").build()
-                    ).salary(BigDecimal.valueOf(2000000L))
+                    .jobTitle("Big Shot")
+                    .salary(BigDecimal.valueOf(2000000L))
                     .notes("Must be nice")
                     .build();
 

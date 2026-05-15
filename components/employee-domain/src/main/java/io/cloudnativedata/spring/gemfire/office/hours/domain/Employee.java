@@ -18,8 +18,8 @@ public class Employee {
     private String email;
     private String dept;
     private long hireDate;
-    private  Location location;
-    private  Job job;
+    private Location location;
+    private String jobTitle;
     private BigDecimal salary;
     private String notes;
 
