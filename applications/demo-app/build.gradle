@@ -24,8 +24,12 @@ ext {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-rest-test'
 	implementation "com.vmware.gemfire:spring-boot-4.0-gemfire-10.2:$springBootForGemFireVersion"
 	implementation "com.vmware.gemfire:gemfire-core:$vmwareGemFireVersion"
+	implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
+	implementation 'org.springframework.ai:spring-ai-advisors-vector-store'
 	// if using continuous queries
 	implementation "com.vmware.gemfire:gemfire-cq:$vmwareGemFireVersion"
 
@@ -36,12 +40,13 @@ dependencies {
 	implementation 'com.github.nyla-solutions:nyla.solutions.core:2.5.1'
 	// if using continuous queries
 	implementation "com.vmware.gemfire:gemfire-cq:$vmwareGemFireVersion"
-
 	implementation 'dev.gemfire:gemfire-distributed-types:1.0.0'
 }
 
 dependencies {
-//	implementation 'org.springframework.ai:spring-ai-starter-vector-store-gemfire'
+	implementation 'org.springframework.ai:spring-ai-starter-vector-store-gemfire'
+	implementation 'org.springframework.ai:spring-ai-tika-document-reader'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2'
 	implementation project(':components:employee-domain')
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
