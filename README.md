@@ -41,3 +41,6 @@ https://blogs.vmware.com/tanzu/introducing-vmware-gemfire-10-ga/
 
 
 "Was GemFire 10 named after anyone"
+
+
+"We are launching a new mission-critical application development project in the next month. Based on their backgrounds and current projects, which 4 employees should we assign to lead it?"

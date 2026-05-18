@@ -98,7 +98,7 @@ public class GemFireConfig {
         };
     }
 
-//        @Bean
+        @Bean
     ApplicationRunner loadData(EmployeeRepository employeeRepository) {
         return args -> {
 
@@ -158,7 +158,7 @@ public class GemFireConfig {
     }
 
 
-        @Bean
+//        @Bean
     ApplicationRunner makeMillionaire(EmployeeRepository employeeRepository) {
 
         return args -> {
