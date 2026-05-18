@@ -1,6 +1,7 @@
 package io.cloudnativedata.spring.gemfire.office.hours.ai;
 
 import io.cloudnativedata.spring.gemfire.office.hours.ai.domain.Answer;
+import io.cloudnativedata.spring.gemfire.office.hours.ai.etl.EmployeeKnowledgePipeline;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -30,6 +31,7 @@ public class AiService {
     private final ChatClient chatModel;
     private final List<Advisor> advisors;
     private final VectorStore vectorStore;
+    private final EmployeeKnowledgePipeline pipeline;
 
     @PostMapping("ask")
     @Cacheable("AiCache")
@@ -46,12 +48,12 @@ public class AiService {
         return results;
     }
 
-    @PostMapping("document")
+    @PostMapping("add/document")
     void addDocument(@RequestBody String text){
         vectorStore.add(List.of(Document.builder().text(text).build()));
     }
 
-    @PostMapping("url")
+    @PostMapping("add/url")
     void addUrl(@RequestBody URL url){
 
         log.info("Reading URL: {}", url);
@@ -63,6 +65,13 @@ public class AiService {
                 .build().apply(tikaDocumentReader.read());
 
         vectorStore.add(readList);
+    }
+
+    @PostMapping("add/employee/knowledge")
+    void loadEmployeesKnowledge(){
+        log.info("Loading employees...");
+
+        pipeline.run();
     }
 
 }

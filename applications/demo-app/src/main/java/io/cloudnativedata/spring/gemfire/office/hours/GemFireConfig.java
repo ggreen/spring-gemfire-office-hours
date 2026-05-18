@@ -98,7 +98,7 @@ public class GemFireConfig {
         };
     }
 
-        @Bean
+//        @Bean
     ApplicationRunner loadData(EmployeeRepository employeeRepository) {
         return args -> {
 

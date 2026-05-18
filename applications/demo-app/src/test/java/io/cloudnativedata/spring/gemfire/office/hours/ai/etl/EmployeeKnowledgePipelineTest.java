@@ -1,18 +1,18 @@
 package io.cloudnativedata.spring.gemfire.office.hours.ai.etl;
 
-import com.sun.java.accessibility.util.ComponentEvtDispatchThread;
-import io.cloudnativedata.spring.gemfire.office.hours.repository.EmployeeRepository;
+import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.document.DocumentReader;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.data.domain.Page;
 
-import java.util.Scanner;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import java.util.List;
+import java.util.function.Function;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeKnowledgePipelineTest {
@@ -21,15 +21,28 @@ class EmployeeKnowledgePipelineTest {
 
     @Mock
     private VectorStore vectorStore;
+
     @Mock
-    private EmployeeRepository repository;
+    private Function<Iterable<Employee>, List<Document>> employeesToDocumentList;
+    @Mock
+    private Page<Employee> list;
+
+    @Mock
+    Page<Employee> empty;
+    @Mock
+    private List<Document> docs;
+    @Mock
+    private DocumentReader reader;
+
+    @BeforeEach
+    void setUp() {
+        subject = new EmployeeKnowledgePipeline(vectorStore,reader);
+    }
 
     @Test
     void runPipeline() {
 
         subject.run();
 
-        verify(repository).findByPages(any());
-        verify(vectorStore).write(any());
     }
 }

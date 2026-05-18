@@ -1,0 +1,105 @@
+firstName:John,lastName:Martin,email: john@gemfire.dev, dept:Tanzu, role: GemFire Product Manager, note:John has been design mission critical in-memory solutions for decades. He is SUCH as humble Servant leader. Adding the fact that he Really really loves GemFire, is his superpower."
+firstName:Dashaun,lastName: Carter, email:dcarter@spring.io, dept:Tanzu, role:Spring Advocate , note:Spring Advocate,Spring and Data JEDI MASTER! Dashaun has a ton of the application development and database support like GemFire. He has been a developer advocate for one of the most popular in-memory solution in the world.
+firstName:Bohyun, lastName:Kim, email: Bohyun@gemfire.dev, dept:Tanzu, role: GemFire Product Manager, note:Bohyun has lot of experience with cloud native data services. She has worked with enterprise databases that delivery mission critical features to a wide scale of users. Bohyun proven expertise with observability of the data technology. She current the product manager of the GemFire In-Memory Data Grid and NOSQL database GemFire.
+firstName:Cora, lastName: Iberklied, email:cora@spring.io, dept:Tanzu, role:Spring Advocate, note: A Ton application Backend and UI development and even GemFire In-Memory Data Grid experience for mission-critical application development
+firstName:John, lastName: Doe, email:jdoe@tanzu.io, dept:Sale, role:Marketing Manager, note: Love fishing
+firstName:John, lastName:Doe, email:jdoe@tanzu.io, dept:Sales, role:Marketing Manager, note:Love fishing
+firstName:Dan, lastName:Vega, email:dvega@tanzu.io, dept:Tanzu, role:Spring Advocate, note:Dan Vega is a prominent developer advocate for tech like Spring and even GemFire In-Memory Data Grid experience for mission-critical application development.
+firstName:Robert, lastName:Johnson, email:rjohnson@tanzu.io, dept:Finance, role:Financial Analyst, note:Bakes sourdough
+firstName:Emily, lastName:Williams, email:ewilliams@tanzu.io, dept:HR, role:HR Specialist, note:Dog lover
+firstName:Michael, lastName:Brown, email:mbrown@tanzu.io, dept:Marketing, role:Content Creator, note:Plays guitar
+firstName:Jessica, lastName:Jones, email:jjones@tanzu.io, dept:Sales, role:Account Executive, note:Enjoys hiking
+firstName:David, lastName:Garcia, email:dgarcia@tanzu.io, dept:Helpdesk, role: Researcher, note:Amateur astronomer
+firstName:Sarah, lastName:Miller, email:smiller@tanzu.io, dept:Support, role:Customer Success, note:LOves gardening
+firstName:James, lastName:Davis, email:jdavis@tanzu.io, dept:Product, role:Product Manager, note:Sci-fi fan
+firstName:Mary, lastName:Rodriguez, email:mrodriguez@tanzu.io, dept:Legal, role:Legal Counsel, note:Practices yoga
+firstName:William, lastName:Martinez, email:wmartinez@tanzu.io, dept:Helpdesk, role:QA Tester, note:Gamer
+firstName:Karen, lastName:Hernandez, email:khernandez@tanzu.io, dept:Finance, role:Accountant, note:Coffee enthusiast
+firstName:Joseph, lastName:Lopez, email:jlopez@tanzu.io, dept:Sales, role:Sales Director, note:Golfer
+firstName:Nancy, lastName:Gonzalez, email:ngonzalez@tanzu.io, dept:HR, role:Recruiter, note:Travel buff
+firstName:Charles, lastName:Wilson, email:cwilson@tanzu.io, dept:IT, role:System Administrator, note:Builds PCs
+firstName:Lisa, lastName:Anderson, email:landerson@tanzu.io, dept:Marketing, role:SEO Specialist, note:Photography hobbyist
+firstName:Thomas, lastName:Thomas, email:tthomas@tanzu.io, dept:Helpdesk, role:Frontend Tester, note:Surfer
+firstName:Betty, lastName:Taylor, email:btaylor@tanzu.io, dept:Support, role:Support Tier 2, note:Cat person
+firstName:Christopher, lastName:Moore, email:cmoore@tanzu.io, dept:Product, role:Interior Designer, note:Sketches daily
+firstName:Sandra, lastName:Jackson, email:sjackson@tanzu.io, dept:Sales, role:BDM, note:Wine taster
+firstName:Daniel, lastName:Martin, email:dmartin@tanzu.io, dept:Helpdesk, role:Painter, note:Chess player
+firstName:Ashley, lastName:Lee, email:alee@tanzu.io, dept:Marketing, role:PR Coordinator, note:Bookworm
+firstName:Matthew, lastName:Perez, email:mperez@tanzu.io, dept:Finance, role:Controller, note:Marathoner
+firstName:Dorothy, lastName:Thompson, email:dthompson@tanzu.io, dept:HR, role:HR Director, note:Quilter
+firstName:Anthony, lastName:White, email:awhite@tanzu.io, dept:IT, role:Researcher, note:Motorcycle rider
+firstName:Donna, lastName:Harris, email:dharris@tanzu.io, dept:Sales, role:Account Manager, note:Foodie
+firstName:Mark, lastName:Sanchez, email:msanchez@tanzu.io, dept:Helpdesk, role:Data Scientist, note:Podcaster
+firstName:Carol, lastName:Clark, email:cclark@tanzu.io, dept:Support, role:Helpdesk Analyst, note:Plays piano
+firstName:Paul, lastName:Ramirez, email:pramirez@tanzu.io, dept:Product, role:Product Owner, note:Woodworker
+firstName:Michelle, lastName:Lewis, email:mlewis@tanzu.io, dept:Legal, role:Compliance Officer, note:Bird watcher
+firstName:Steven, lastName:Robinson, email:srobinson@tanzu.io, dept:Helpdesk, role:Researcher, note:Ethical hacker
+firstName:Amanda, lastName:Walker, email:awalker@tanzu.io, dept:Marketing, role:Event Planner, note:Dancer
+firstName:Andrew, lastName:Young, email:ayoung@tanzu.io, dept:Sales, role:Sales Rep, note:Snowboarder
+firstName:Melissa, lastName:Allen, email:mallen@tanzu.io, dept:Finance, role:Budget Analyst, note:Painter
+firstName:Joshua, lastName:King, email:jking@tanzu.io, dept:IT, role:IT Support, note:Movie buff
+firstName:Deborah, lastName:Wright, email:dwright@tanzu.io, dept:HR, role:Onboarding Specialist, note:Gardener
+firstName:Kevin, lastName:Scott, email:kscott@tanzu.io, dept:Helpdesk, role:Mail support, note:Anime fan
+firstName:Stephanie, lastName:Torres, email:storres@tanzu.io, dept:Support, role:Support Lead, note:Bakes cakes
+firstName:Brian, lastName:Nguyen, email:bnguyen@tanzu.io, dept:Product, role:Data Analyst, note:Fantasy football fan
+firstName:Rebecca, lastName:Hill, email:rhill@tanzu.io, dept:Marketing, role:Social Media Lead, note:Vlogger
+firstName:George, lastName:Flores, email:gflores@tanzu.io, dept:Sales, role:Regional Manager, note:History nerd
+firstName:Sharon, lastName:Green, email:sgreen@tanzu.io, dept:Finance, role:Auditor, note:Knits sweaters
+firstName:Edward, lastName:Adams, email:eadams@tanzu.io, dept:Helpdesk, role:Building Architect, note:Homebrewer
+firstName:Cynthia, lastName:Nelson, email:cnelson@tanzu.io, dept:HR, role:Benefits Manager, note:Yoga instructor
+firstName:Ronald, lastName:Baker, email:rbaker@tanzu.io, dept:IT, role:Database Administrator, note:Collects vinyl
+firstName:Kathleen, lastName:Hall, email:khall@tanzu.io, dept:Marketing, role:Brand Strategist, note:Scuba diver
+firstName:Edward, lastName:Rivera, email:erivera@tanzu.io, dept:Sales, role:Inside Sales, note:Plays tennis
+firstName:Shirley, lastName:Campbell, email:scampbell@tanzu.io, dept:Support, role:Customer Advocate, note:Pottery maker
+firstName:Jason, lastName:Mitchell, email:jmitchell@tanzu.io, dept:Product, role:UX Researcher, note:Cyclist
+firstName:Helen, lastName:Carter, email:hcarter@tanzu.io, dept:Legal, role:Paralegal, note:Reads mysteries
+firstName:Jeffrey, lastName:Roberts, email:jroberts@tanzu.io, dept:Helpdesk, role:Helpdesk Manager, note:Sails boats
+firstName:Anna, lastName:Gomez, email:agomez@tanzu.io, dept:Finance, role:Payroll Specialist, note:Loves camping
+firstName:Ryan, lastName:Phillips, email:rphillips@tanzu.io, dept:Sales, role:Account Executive, note:Skiing enthusiast
+firstName:Angela, lastName:Evans, email:aevans@tanzu.io, dept:HR, role:HR Coordinator, note:Bakes cookies
+firstName:Jacob, lastName:Turner, email:jturner@tanzu.io, dept:IT, role:Marketer, note:Gamer
+firstName:Brenda, lastName:Diaz, email:bdiaz@tanzu.io, dept:Marketing, role:Copywriter, note:Poet
+firstName:Gary, lastName:Parker, email:gparker@tanzu.io, dept:Helpdesk, role:Firmware , note:RC planes hobbyist
+firstName:Pamela, lastName:Cruz, email:pcruz@tanzu.io, dept:Support, role:Telephone Support, note:Cat lover
+firstName:Nicholas, lastName:Edwards, email:nedwards@tanzu.io, dept:Product, role:Product Director, note:Runs 10ks
+firstName:Nicole, lastName:Collins, email:ncollins@tanzu.io, dept:Sales, role:Sales Enablement, note:Hikes national parks
+firstName:Eric, lastName:Reyes, email:ereyes@tanzu.io, dept:Finance, role:Tax Specialist, note:Coin collector
+firstName:Christine, lastName:Stewart, email:cstewart@tanzu.io, dept:HR, role:Talent Sourcer, note:Dog trainer
+firstName:Jonathan, lastName:Morris, email:jmorris@tanzu.io, dept:Helpdesk, role:Researcher, note:hobbyist
+firstName:Janet, lastName:Morales, email:jmorales@tanzu.io, dept:Marketing, role:Media Buyer, note:Salsa dancer
+firstName:Stephen, lastName:Murphy, email:smurphy@tanzu.io, dept:IT, role:Network Specialist, note:Plays drums
+firstName:Catherine, lastName:Cook, email:ccook@tanzu.io, dept:Support, role:Support Specialist, note:Gardening expert
+firstName:Larry, lastName:Rogers, email:lrogers@tanzu.io, dept:Product, role:Technical Writer, note:Woodcarver
+firstName:Carolyn, lastName:Gutierrez, email:cgutierrez@tanzu.io, dept:Sales, role:Enterprise Sales, note:Wine lover
+firstName:Justin, lastName:Ortiz, email:jortiz@tanzu.io, dept:Helpdesk, role:Android Tester, note:Skateboarder
+firstName:Rachel, lastName:Morgan, email:rmorgan@tanzu.io, dept:Finance, role:Financial Planner, note:Kayaker
+firstName:Scott, lastName:Cooper, email:scooper@tanzu.io, dept:HR, role:HR Generalist, note:Volunteers weekly
+firstName:Janet, lastName:Peterson, email:jpeterson@tanzu.io, dept:Marketing, role:Growth Marketer, note:Surfs weekly
+firstName:Brandon, lastName:Bailey, email:bbailey@tanzu.io, dept:IT, role:Security Analyst, note:Lockpicking hobbyist
+firstName:Catherine, lastName:Reed, email:creed@tanzu.io, dept:Sales, role:Inside Sales, note:Cooks Italian food
+firstName:Raymond, lastName:Kelly, email:rkelly@tanzu.io, dept:Helpdesk, role:iOS Tester, note:Gamer
+firstName:Samantha, lastName:Howard, email:showard@tanzu.io, dept:Support, role:Customer Operations, note:Knitting fan
+firstName:Gregory, lastName:Ramos, email:gramos@tanzu.io, dept:Product, role:Product Analyst, note:Board game collector
+firstName:Christine, lastName:Cox, email:ccox@tanzu.io, dept:Legal, role:IP Counsel, note:Plays violin
+firstName:Samuel, lastName:Ward, email:sward@tanzu.io, dept:Helpdesk, role:QA Automation, note:Brewmaster
+firstName:Debra, lastName:Richardson, email:drichardson@tanzu.io, dept:Finance, role:Accounts Payable, note:Enjoys puzzles
+firstName:Benjamin, lastName:Watson, email:bwatson@tanzu.io, dept:Sales, role:Account Manager, note:Golf player
+firstName:Janet, lastName:Brooks, email:jbrooks@tanzu.io, dept:HR, role:Recruitment Lead, note:Travels often
+firstName:Patrick, lastName:Chavez, email:pchavez@tanzu.io, dept:IT, role:Researcher, note:PC Enthusiast
+firstName:Emma, lastName:Wood, email:ewood@tanzu.io, dept:Marketing, role:SEO Manager, note:Photography fan
+firstName:Jack, lastName:James, email:jjames@tanzu.io, dept:Helpdesk, role:Site Reliability Engineer, note:Hiker
+firstName:Katherine, lastName:Bennett, email:kbennett@tanzu.io, dept:Support, role:Support Rep, note:Dog person
+firstName:Dennis, lastName:Gray, email:dgray@tanzu.io, dept:Product, role:Product Designer, note:Illustrator
+firstName:Pamela, lastName:Mendoza, email:pmendoza@tanzu.io, dept:Sales, role:Sales Director, note:Tennis player
+firstName:Jerry, lastName:Ruiz, email:jruiz@tanzu.io, dept:Helpdesk, role:Researcher, note:Loves fishing
+firstName:Tyler, lastName:Hughes, email:thughes@tanzu.io, dept:Finance, role:Treasury Analyst, note:Runner
+firstName:Diane, lastName:Price, email:dprice@tanzu.io, dept:HR, role:HR Business Partner, note:Bakes bread
+firstName:Aaron, lastName:Alvarez, email:aalvarez@tanzu.io, dept:IT, role:Systems Specialist, note:Chess expert
+firstName:Jose, lastName:Castillo, email:jcastillo@tanzu.io, dept:Marketing, role:Affiliate Manager, note:Guitarist
+firstName:Christine, lastName:Sanders, email:csanders@tanzu.io, dept:Sales, role:Account Executive, note:Wine enthusiast
+firstName:Adam, lastName:Patel, email:apatel@tanzu.io, dept:Helpdesk, role:Researcher, note:Gamer
+firstName:Megan, lastName:Myers, email:mmyers@tanzu.io, dept:Support, role:Customer Success Lead, note:Gardener
+firstName:Harry, lastName:Long, email:hlong@tanzu.io, dept:Product, role:Technical PM, note:Sci-Fi writer
+firstName:Laura, lastName:Ross, email:lross@tanzu.io, dept:Legal, role:Legal Assistant, note:Plays cello
+firstName:Wayne, lastName:Foster, email:wfoster@tanzu.io, dept:Helpdesk, role:Researcher, note:Woodworking fan
+firstName:Alice, lastName:Jimenez, email:ajimenez@tanzu.io, dept:Finance, role:Senior Accountant, note:Hikes daily
