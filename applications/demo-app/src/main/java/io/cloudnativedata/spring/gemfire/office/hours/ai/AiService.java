@@ -8,6 +8,7 @@ import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
+import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +56,10 @@ public class AiService {
         var resource = new UrlResource(url);
 
         var tikaDocumentReader = new TikaDocumentReader(resource);
-        var readList = tikaDocumentReader.read();
+        var readList = TokenTextSplitter.builder()
+                .withChunkSize(100)
+                .build().apply(tikaDocumentReader.read());
+
         vectorStore.add(readList);
     }
 

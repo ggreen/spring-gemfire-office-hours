@@ -2,6 +2,7 @@ package io.cloudnativedata.spring.gemfire.office.hours;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ public class AiClientConfig {
         return chatClientBuilder
                 .build();
     }
+
 
     @Bean
     QuestionAnswerAdvisor advisor(VectorStore vectorStore){
