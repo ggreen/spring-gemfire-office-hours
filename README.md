@@ -38,3 +38,6 @@ create region --name=Employee --type=PARTITION --skip-if-exists
 ```
 
 https://blogs.vmware.com/tanzu/introducing-vmware-gemfire-10-ga/
+
+
+"Was GemFire 10 named after anyone"

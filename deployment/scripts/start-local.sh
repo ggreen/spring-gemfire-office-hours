@@ -10,3 +10,4 @@ curl http://127.0.0.1:8080/metrics
 
 
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=Employee --type=PARTITION --skip-if-exists"
+$GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=AiCache --type=PARTITION --skip-if-exists"

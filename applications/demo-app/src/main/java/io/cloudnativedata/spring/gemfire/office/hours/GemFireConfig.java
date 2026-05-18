@@ -2,6 +2,7 @@ package io.cloudnativedata.spring.gemfire.office.hours;
 
 import dev.gemfire.dtype.DAtomicLong;
 import dev.gemfire.dtype.DTypeFactory;
+import io.cloudnativedata.spring.gemfire.office.hours.ai.domain.Answer;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Country;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Location;
@@ -16,8 +17,10 @@ import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.gemfire.cache.config.EnableGemfireCaching;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
+import org.springframework.data.gemfire.config.annotation.EnableClusterDefinedRegions;
 import org.springframework.data.gemfire.config.annotation.EnableContinuousQueries;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
 
@@ -30,13 +33,8 @@ import java.util.ArrayList;
 @EnableContinuousQueries
 @Slf4j
 @EnablePdx(serializerBeanName="employSerializer")
+@EnableGemfireCaching
 public class GemFireConfig {
-
-    @Bean
-    PdxSerializer employSerializer()
-    {
-        return new ReflectionBasedAutoSerializer(Employee.class.getPackageName()+"..*");
-    }
 
     @Bean
     ClientRegionFactoryBean<String, Employee> employeeRegion(ClientCache cache) {
@@ -46,6 +44,16 @@ public class GemFireConfig {
         regionBean.setDataPolicy(DataPolicy.EMPTY);
         return regionBean;
     }
+
+    @Bean
+    ClientRegionFactoryBean<String, Employee> aiCacheRegion(ClientCache cache) {
+        var regionBean = new ClientRegionFactoryBean<String, Employee>();
+        regionBean.setCache(cache);
+        regionBean.setName("AiCache");
+        regionBean.setDataPolicy(DataPolicy.EMPTY);
+        return regionBean;
+    }
+
 
     //    @Bean
     ApplicationRunner applicationRunner(EmployeeRepository employeeRepository) {

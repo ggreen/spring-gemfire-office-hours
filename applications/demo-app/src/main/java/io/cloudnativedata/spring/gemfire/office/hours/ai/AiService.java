@@ -10,6 +10,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,7 @@ public class AiService {
     private final VectorStore vectorStore;
 
     @PostMapping("ask")
+    @Cacheable("AiCache")
     public Answer ask(@RequestBody String prompt){
         log.info("asking for a question: {}", prompt);
 
