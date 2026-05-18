@@ -12,7 +12,6 @@ public class SerializationConfig {
     @Bean
     PdxSerializer employSerializer()
     {
-        return new ReflectionBasedAutoSerializer(Employee.class.getPackageName()+"..*",
-                Answer.class.getName());
+        return new ReflectionBasedAutoSerializer("io.cloudnativedata.spring.gemfire.office.hours.*");
     }
 }
