@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 public class SalaryAlertListener {
 
 //    @ContinuousQuery(name = "PaymentQuery", query = "SELECT * FROM /Employee WHERE salary > 1000000")
-    public void process(CqEvent event) {
+        public void process(CqEvent event) {
 
-      var results =  event.getNewValue();
-      log.info("******* SALARY over 1 MILLION !!!  {} ", results);
-    }
+          var results =  event.getNewValue();
+          log.info("******* SALARY over 1 MILLION !!!  {} ", results);
+        }
 }

@@ -1,5 +1,170 @@
-<h1>Web Application</h1>
-<hr/>
-<ul>
-    <li><a href="/swagger-ui.html">Swagger-UI</a></li>
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring GemFire Office Hours</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        @page {
+            size: A4;
+            margin: 15mm 12mm;
+            background-color: #1c1c1c; /* Dark theme canvas match */
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1c1c1c;
+            color: #e3e3e3;
+            margin: 0;
+            padding: 0;
+            font-size: 11pt;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 100%;
+        }
+        a {
+            color: white;
+        }
+        /* Top Banner Accent */
+        .header-banner {
+            background-color: #242424;
+            border-bottom: 3px solid #6db33f; /* Spring Green */
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        .header-banner h1 {
+            color: #ffffff;
+            font-size: 22pt;
+            margin: 0 0 5px 0;
+            font-weight: 700;
+        }
+        .header-banner .subtitle {
+            color: #9cb6d4; /* Soft muted blue-grey */
+            font-size: 12pt;
+            margin: 0;
+        }
+        h2 {
+            color: white; /* Spring Green */
+            font-size: 14pt;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #333333;
+            padding-bottom: 5px;
+            page-break-after: avoid;
+        }
+        p {
+            margin: 0 0 12px 0;
+            color: #d1d1d1;
+        }
+        .grid-info {
+            display: table;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .grid-row {
+            display: table-row;
+        }
+        .grid-cell {
+            display: table-cell;
+            padding: 10px;
+            background-color: #242424;
+            border: 1px solid #2d2d2d;
+            vertical-align: top;
+        }
+        .grid-cell.label {
+            width: 25%;
+            font-weight: bold;
+            color: white;
+        }
+        .agenda-box {
+            background-color: #242424;
+            border-left: 4px solid #6db33f;
+            padding: 15px;
+            margin-bottom: 15px;
+            page-break-inside: avoid;
+        }
+        .agenda-title {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 12pt;
+            margin-bottom: 5px;
+        }
+        ul {
+            margin: 0 0 15px 0;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 6px;
+            color: #d1d1d1;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 15px;
+            border-top: 1px solid #333333;
+            text-align: center;
+            font-size: 9pt;
+            color: #777777;
+        }
+        .badge {
+            display: inline-block;
+            background-color: #34495e;
+            color: #ffffff;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 9pt;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-banner">
+        <h1>Spring GemFire Office Hours</h1>
+        <div class="subtitle">Architecture, Development & Scale Architecture Engineering Sync</div>
+        <div class="subtitle"><a href="swagger-ui/index.html">swagger-ui</a></div>
+    </div>
+
+    <div>
+        <img src="imgs/spring-gemfire-use-cases.png" height="446" width="1193"/></div>
+
+    <h2>Session Logistics</h2>
+    <div class="grid-info">
+        <div class="grid-row">
+            <div class="grid-cell label">Target Audience</div>
+            <div class="grid-cell">Spring Developers, Data Engineers, Cluster Administrators, Architect Champions</div>
+
+        </div>
+    </div>
+
+    <h2>Core Objectives</h2>
+    <p>This recurring office hours session serves as an open engineering forum dedicated to exploring Spring Framework integrations with Tanzu GemFire. Bring your topology, configuration, performance, and scaling challenges directly to the project maintainers and subject matter experts.</p>
+
+    <h2>Typical Agenda Architecture</h2>
+
+    <div class="agenda-box">
+        <div class="agenda-title">Office Hours Activities & Topics</div>
+        <ul>
+            <li>Put & Get</li>
+            <li>Performance Test</li>
+            <li>Load Data</li>
+            <li>Queries</li>
+            <li>Event/ Continuous Queries</li>
+            <li>Distribute Types</li>
+            <li>Artificial Intelligence</li>
+        </ul>
+    </div>
+
+
+
+    <div class="footer">
+        Spring & GemFire Community Collaboration © 2026. Built utilizing official spring.io design palette principles.
+    </div>
+</div>
+
+</body>
+</html>
