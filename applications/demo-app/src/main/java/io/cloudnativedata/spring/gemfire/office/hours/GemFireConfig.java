@@ -2,7 +2,6 @@ package io.cloudnativedata.spring.gemfire.office.hours;
 
 import dev.gemfire.dtype.DAtomicLong;
 import dev.gemfire.dtype.DTypeFactory;
-import io.cloudnativedata.spring.gemfire.office.hours.ai.domain.Answer;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Country;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Location;
@@ -12,15 +11,12 @@ import nyla.solutions.core.io.csv.CsvReader;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.pdx.PdxSerializer;
-import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.cache.config.EnableGemfireCaching;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
-import org.springframework.data.gemfire.config.annotation.EnableClusterDefinedRegions;
 import org.springframework.data.gemfire.config.annotation.EnableContinuousQueries;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
 
@@ -55,20 +51,7 @@ public class GemFireConfig {
     }
 
 
-    //    @Bean
-    ApplicationRunner applicationRunner(EmployeeRepository employeeRepository) {
-        return args -> {
-            var emp = JavaBeanGeneratorCreator.of(Employee.class).create();
-
-            employeeRepository.save(emp);
-
-            var actual = employeeRepository.findById(emp.getId()).orElse(null);
-
-            log.info("Found employee {}", actual);
-        };
-    }
-
-    //    @Bean
+    @Bean
     ApplicationRunner perfTest(EmployeeRepository employeeRepository) {
         return args -> {
             var count = 10000;
@@ -98,67 +81,24 @@ public class GemFireConfig {
         };
     }
 
-//        @Bean
-    ApplicationRunner loadData(EmployeeRepository employeeRepository) {
-        return args -> {
-
-            var csvReader = new CsvReader(Paths.get("applications/demo-app/src/test/resources/csv/employee.csv").toFile());
-            for (var line : csvReader) {
-
-                var i = 0;
-                var builder = Employee.builder();
-                builder.id(line.get(i++));
-
-                builder.firstName(line.get(i++));
-                builder.lastName(line.get(i++));
-                builder.email(line.get(i++));
-                builder.hireDate(Long.parseLong(line.get(i++)));
-                builder.dept(line.get(i++));
-                builder.jobTitle(line.get(i++));
-                var locationBuilder = Location.builder();
-
-                locationBuilder.id(line.get(i++));
-                locationBuilder.city(line.get(i++));
-                locationBuilder.state(line.get(i++));
-                builder.location(locationBuilder.build());
-
-                var countryBuilder = Country.builder();
-
-                countryBuilder.code(line.get(i++));
-                countryBuilder.name(line.get(i++));
-                locationBuilder.country(countryBuilder.build());
-
-                builder.location(locationBuilder.build());
-                builder.salary(new BigDecimal(line.get(i++)));
-                builder.notes(line.get(i++));
-
-                var emp = builder.build();
-
-                employeeRepository.save(emp);
-            }
-
-            log.info("Loaded employee data");
-
-        };
-    }
-
-
-//        @Bean
+    @Bean
     ApplicationRunner query(EmployeeRepository employeeRepository) {
 
         return args -> {
 
-//            var results = employeeRepository.findByFirstNameContainingAndLastNameContaining("J","Mar");
+            var results = employeeRepository.findByFirstNameContainingAndLastNameContaining("J", "Mar");
 
-//            var results = employeeRepository.searchBySalaryGreaterThan(BigDecimal.valueOf(1000000));
-
-            var results = employeeRepository.averageSalary();
             log.info("results {} ", results);
+
+            results = employeeRepository.searchBySalaryGreaterThan(BigDecimal.valueOf(1000000));
+            log.info("results {} ", results);
+
+            var average = employeeRepository.averageSalary();
+            log.info("average {} ", average);
         };
     }
 
-
-//        @Bean
+    @Bean
     ApplicationRunner makeMillionaire(EmployeeRepository employeeRepository) {
 
         return args -> {
@@ -189,29 +129,39 @@ public class GemFireConfig {
         };
     }
 
-//    @Bean
-    ApplicationRunner distributedTypes(ClientCache clientCache, EmployeeRepository employeeRepository) {
-
+    @Bean
+    ApplicationRunner distributedTypes(ClientCache clientCache,
+                                       EmployeeRepository employeeRepository) {
         return args -> {
 
+            //Factory supports, semaphores, queues, list, set and more
             var factory = new DTypeFactory(clientCache);
 
+            //Create a distributed atomic long to use a sequence Id
             DAtomicLong empSeq = factory.createDAtomicLong("EmpSeq");
-            var empId = String.valueOf(empSeq.getAndAdd(1));
 
+            //Get Next Long and Add 1
+            var empId = String.valueOf(empSeq.getAndAdd(1));
+            //Generate emp with Id
             var emp1 = JavaBeanGeneratorCreator.of(Employee.class).create();
             emp1.setId(empId);
-
             log.info("Emp ID: {}", emp1.getId());
+
+            //save employee using sequence atomic long
             employeeRepository.save(emp1);
 
+            //Save another employee
             var emp2 = JavaBeanGeneratorCreator.of(Employee.class).create();
+
+            //Get Next Sequence
             empId = String.valueOf(empSeq.getAndAdd(1));
             emp2.setId(empId);
             log.info("Emp ID: {}", emp2.getId());
+
+            //Save another employee
             employeeRepository.save(emp2);
 
-
+            //Log Results
             log.info("Emp 1: {} \n\n\n Emp 2: {}",
                     employeeRepository.findById(emp1.getId()),
                     employeeRepository.findById(emp2.getId()));
