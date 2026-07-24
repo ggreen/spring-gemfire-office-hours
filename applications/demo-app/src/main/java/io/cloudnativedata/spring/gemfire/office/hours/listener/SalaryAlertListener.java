@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SalaryAlertListener {
 
-//    @ContinuousQuery(name = "PaymentQuery", query = "SELECT * FROM /Employee WHERE salary > 1000000")
+    @ContinuousQuery(name = "PaymentQuery", query = "SELECT * FROM /Employee WHERE salary > 1000000")
         public void process(CqEvent event) {
 
           var results =  event.getNewValue();

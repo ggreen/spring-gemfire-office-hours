@@ -6,11 +6,10 @@ Prerequisite
 
 ## Getting Start
 
-
-
 start gemfire
 
 Option 1 (Podman required)
+
 ```shell
 deployment/scripts/start-gemfire-containers.sh
 ```
@@ -38,167 +37,110 @@ create region --name=Employee --type=PARTITION --skip-if-exists
 ```
 
 
-# Spring Data GemFire
+# Agenda
 
 
-## Examples
-
-```java
-@Configuration
-@ClientCacheApplication(subscriptionEnabled = true)
-@EnableContinuousQueries
-@Slf4j
-@EnablePdx(serializerBeanName="employSerializer")
-@EnableGemfireCaching
-public class GemFireConfig {
-
-    @Bean
-    ClientRegionFactoryBean<String, Employee> employeeRegion(ClientCache cache) {
-        var regionBean = new ClientRegionFactoryBean<String, Employee>();
-        regionBean.setCache(cache);
-        regionBean.setName("Employee");
-        regionBean.setDataPolicy(DataPolicy.EMPTY);
-        return regionBean;
-    }
-
-    @Bean
-    ClientRegionFactoryBean<String, Employee> aiCacheRegion(ClientCache cache) {
-        var regionBean = new ClientRegionFactoryBean<String, Employee>();
-        regionBean.setCache(cache);
-        regionBean.setName("AiCache");
-        regionBean.setDataPolicy(DataPolicy.EMPTY);
-        return regionBean;
-    }
+  - Put & Get
+  - Performance Test
+  - Load Data
+  - Queries
+  - Event/ Continuous Queries
+  - Artificial Intelligence
 
 
-    @Bean
-    ApplicationRunner perfTest(EmployeeRepository employeeRepository) {
-        return args -> {
-            var count = 10000;
-
-            var list = new ArrayList<Employee>(count);
-            Employee emp;
-            for (int i = 0; i < count; i++) {
-                emp = JavaBeanGeneratorCreator.of(Employee.class).create();
-                emp.setId(String.valueOf(i));
-                list.add(emp);
-            }
-            var start = System.currentTimeMillis();
-            employeeRepository.saveAll(list);
-            var end = System.currentTimeMillis();
-
-            var timing = (end - start) / (count * 1.0);
-            log.info("!!!!! writes per millisecond: {}", timing);
-
-            start = System.currentTimeMillis();
-            for (int i = 0; i < count; i++) {
-                emp = employeeRepository.findById(String.valueOf(i)).get();
-            }
-            end = System.currentTimeMillis();
-            timing = (end - start) / (count * 1.0);
-            log.info("!!!!! read per millisecond: {}", timing);
-
-        };
-    }
-
-    @Bean
-    ApplicationRunner query(EmployeeRepository employeeRepository) {
-
-        return args -> {
-
-            var results = employeeRepository.findByFirstNameContainingAndLastNameContaining("J", "Mar");
-
-            log.info("results {} ", results);
-
-            results = employeeRepository.searchBySalaryGreaterThan(BigDecimal.valueOf(1000000));
-            log.info("results {} ", results);
-
-            var average = employeeRepository.averageSalary();
-            log.info("average {} ", average);
-        };
-    }
-
-    @Bean
-    ApplicationRunner makeMillionaire(EmployeeRepository employeeRepository) {
-
-        return args -> {
-
-            var rich = Employee.builder()
-                    .id("rich").firstName("Richie").lastName("Rich")
-                    .email("rich@rich.com")
-                    .dept("rich").hireDate(System.currentTimeMillis())
-                    .location(
-                            Location.builder()
-                                    .id("dreamLand")
-                                    .zipCode("12345")
-                                    .state("NYC")
-                                    .state("NY")
-                                    .country(Country.builder().name("US")
-                                            .name("United States").build())
-                                    .build())
-                    .jobTitle("Big Shot")
-                    .salary(BigDecimal.valueOf(2000000L))
-                    .notes("Must be nice")
-                    .build();
+Example Queries
 
 
-            Thread.sleep(10000);
-            employeeRepository.save(rich);
+```sql
+select distinct location.state from /Employee
+```
 
-            log.info("Saved rich employee {}", rich);
-        };
-    }
+```sql
+    select avg(salary) as avg_salary, max(salary) as max_salary
+    from /Employee
+    where dept = 'Tanzu'
 
-    @Bean
-    ApplicationRunner distributedTypes(ClientCache clientCache,
-                                       EmployeeRepository employeeRepository) {
-        return args -> {
-
-            //Factory supports, semaphores, queues, list, set and more
-            var factory = new DTypeFactory(clientCache);
-
-            //Create a distributed atomic long to use a sequence Id
-            DAtomicLong empSeq = factory.createDAtomicLong("EmpSeq");
-
-            //Get Next Long and Add 1
-            var empId = String.valueOf(empSeq.getAndAdd(1));
-            //Generate emp with Id
-            var emp1 = JavaBeanGeneratorCreator.of(Employee.class).create();
-            emp1.setId(empId);
-            log.info("Emp ID: {}", emp1.getId());
-
-            //save employee using sequence atomic long
-            employeeRepository.save(emp1);
-
-            //Save another employee
-            var emp2 = JavaBeanGeneratorCreator.of(Employee.class).create();
-
-            //Get Next Sequence
-            empId = String.valueOf(empSeq.getAndAdd(1));
-            emp2.setId(empId);
-            log.info("Emp ID: {}", emp2.getId());
-
-            //Save another employee
-            employeeRepository.save(emp2);
-
-            //Log Results
-            log.info("Emp 1: {} \n\n\n Emp 2: {}",
-                    employeeRepository.findById(emp1.getId()),
-                    employeeRepository.findById(emp2.getId()));
-
-        };
-    }
-
-}
 ```
 
 
+## CQ
+
+```shell
+curl -X 'PUT' \
+'http://localhost:9090/api/employees/rich' \
+-H 'accept: application/vnd.hal+json' \
+-H 'Content-Type: application/json' \
+-d '{"dept":"rich","email":"rich@rich.com","firstName":"Richie","hireDate":1779299361566,"id":"rich","jobTitle":"Big Shot","lastName":"Rich","location":{"city":null,"country":{"code":null,"name":"United States"},"id":"dreamLand","state":"NY","streetAddress":null,"zipCode":"12345"},"notes":"Must be nice","salary":2000000}'
+```
+
+## Ai Example
+
+Context
+
+```text
+VMware Tanzu GemFire (often just called GemFire) is a high-performance, distributed, in-memory data grid (IMDG) and key-value store.  Instead of relying on traditional, disk-based databases which can introduce latency, GemFire pools the random-access memory (RAM) across a cluster of multiple servers to store and manage data. This allows applications to read and write data at ultra-low, sub-millisecond speeds.  Because of its extreme speed, reliability, and high consistency, GemFire is heavily used by large enterprises in industries like financial services (e.g., trading platforms), e-commerce (e.g., shopping carts), and real-time logistics.  
+```
+
+```shell
+curl -X 'POST' \
+  'http://localhost:9090/ai/add/document' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '"VMware Tanzu GemFire (often just called GemFire) is a high-performance, distributed, in-memory data grid (IMDG) and key-value store.  Instead of relying on traditional, disk-based databases which can introduce latency, GemFire pools the random-access memory (RAM) across a cluster of multiple servers to store and manage data. This allows applications to read and write data at ultra-low, sub-millisecond speeds.  Because of its extreme speed, reliability, and high consistency, GemFire is heavily used by large enterprises in industries like financial services (e.g., trading platforms), e-commerce (e.g., shopping carts), and real-time logistics."'
+```
+
+Question: what is GemFire?
+
+```shell
+curl -X 'POST' \
+  'http://localhost:9090/ai/ask' \
+  -H 'accept: application/vnd.hal+json' \
+  -H 'Content-Type: application/json' \
+  -d '"what is GemFire?"'
+```
+
+
+Add URL
+
 https://blogs.vmware.com/tanzu/introducing-vmware-gemfire-10-ga/
 
-
-
+```shell
+curl -X 'POST' \
+  'http://localhost:9090/ai/add/url' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '"https://blogs.vmware.com/tanzu/introducing-vmware-gemfire-10-ga/"'
+```
 
 "Was GemFire 10 named after anyone"
 
+```shell
+curl -X 'POST' \
+  'http://localhost:9090/ai/ask' \
+  -H 'accept: application/vnd.hal+json' \
+  -H 'Content-Type: application/json' \
+  -d '"Was GemFire 10 named after anyone""'
+```
+
+
+---------------
+
+Running AI data Pipeline with Spring AI + GemFire
+
+```shell
+curl -X 'POST' \
+  'http://localhost:9090/ai/add/employee/knowledge' \
+  -H 'accept: */*' \
+  -d ''
+```
 
 We are launching a new mission-critical application development GemFire project in the next month. Based on their notes which employees should we assign to it?
+
+
+```shell
+curl -X 'POST' \
+  'http://localhost:9090/ai/ask' \
+  -H 'accept: application/vnd.hal+json' \
+  -H 'Content-Type: application/json' \
+  -d '"We are launching a new mission-critical application development GemFire project in the next month. Based on their notes which employees should we assign to it?"'
+```
