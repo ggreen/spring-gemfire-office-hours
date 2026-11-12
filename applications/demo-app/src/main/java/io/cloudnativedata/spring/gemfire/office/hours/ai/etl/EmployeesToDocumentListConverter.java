@@ -4,6 +4,7 @@ import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
 import org.springframework.ai.document.Document;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -11,6 +12,9 @@ import java.util.function.Function;
 public class EmployeesToDocumentListConverter implements Function<Iterable<Employee>, List<Document>> {
     @Override
     public List<Document> apply(Iterable<Employee> employees) {
+        if(employees == null)
+            return Collections.emptyList();
+
         var list = new ArrayList<Document>();
         employees.forEach(e ->
                  list.add(Document

@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '4.0.6'
+	id 'org.springframework.boot' version '4.1.2'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -15,29 +15,30 @@ java {
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
 
 ext {
-	set('springAiVersion', "2.0.0-M5")
+	set('springAiVersion', "2.0.1")
 	springBootForGemFireVersion = '2.0.0'
-	vmwareGemFireVersion = '10.2.0'
+	vmwareGemFireVersion = '10.3.4'
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-rest-test'
-	implementation "com.vmware.gemfire:spring-boot-4.0-gemfire-10.2:$springBootForGemFireVersion"
+	implementation "com.vmware.gemfire:spring-boot-4.1-gemfire-10.3:$springBootForGemFireVersion"
 	implementation "com.vmware.gemfire:gemfire-core:$vmwareGemFireVersion"
 	implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
-	implementation 'org.springframework.ai:spring-ai-advisors-vector-store'
+//	implementation 'org.springframework.ai:spring-ai-advisors-vector-store'
+	implementation 'org.springframework.ai:spring-ai-vector-store-advisor'
 	// if using continuous queries
 	implementation "com.vmware.gemfire:gemfire-cq:$vmwareGemFireVersion"
 
-	implementation "com.vmware.gemfire:spring-boot-4.0-gemfire-10.2:$springBootForGemFireVersion"
 	implementation "com.vmware.gemfire:gemfire-core:$vmwareGemFireVersion"
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 
-	implementation 'com.github.nyla-solutions:nyla.solutions.core:2.5.1'
+	implementation 'com.github.nyla-solutions:nyla.solutions.core:2.6.0'
 	// if using continuous queries
 	implementation "com.vmware.gemfire:gemfire-cq:$vmwareGemFireVersion"
 	implementation 'dev.gemfire:gemfire-distributed-types:1.0.0'
@@ -46,7 +47,7 @@ dependencies {
 dependencies {
 	implementation 'org.springframework.ai:spring-ai-starter-vector-store-gemfire'
 	implementation 'org.springframework.ai:spring-ai-tika-document-reader'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.0'
 	implementation project(':components:employee-domain')
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

@@ -27,6 +27,11 @@ public class EmployeeKnowledgePipeline implements Runnable {
                 .withChunkSize(100)
                 .build().apply(reader.read());
 
+        if(chunks.isEmpty()){
+            log.info("No employee knowledge found");
+            return;
+        }
+
         var pages = Organizer.change().toPages(chunks,100);
         for (var page : pages) {
             vectorStore.write(new ArrayList<>(page));

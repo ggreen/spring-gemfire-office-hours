@@ -2,7 +2,7 @@
 
 Prerequisite 
 
-- GemFire binaries and Java 17 or higher installed
+- GemFire binaries and Java 21 or higher installed
 
 ## Getting Start
 

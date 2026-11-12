@@ -1,14 +1,11 @@
 package io.cloudnativedata.spring.gemfire.office.hours;
 
-import io.cloudnativedata.spring.gemfire.office.hours.domain.Country;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
-import io.cloudnativedata.spring.gemfire.office.hours.domain.Location;
 import io.cloudnativedata.spring.gemfire.office.hours.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.cache.query.CqEvent;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -19,11 +16,7 @@ import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnableContinuousQueries;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
-import org.springframework.data.gemfire.listener.annotation.ContinuousQuery;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-
-import java.math.BigDecimal;
 
 
 @Configuration
