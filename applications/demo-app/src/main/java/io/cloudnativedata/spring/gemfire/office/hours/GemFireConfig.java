@@ -1,5 +1,7 @@
 package io.cloudnativedata.spring.gemfire.office.hours;
 
+import com.vmware.gemfire.distributedtypes.DAtomicLong;
+import com.vmware.gemfire.distributedtypes.DTypeFactory;
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
 import io.cloudnativedata.spring.gemfire.office.hours.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -45,8 +47,48 @@ public class GemFireConfig {
         return regionBean;
     }
 
-
     @Bean
+    ApplicationRunner distributedTypes(ClientCache clientCache,
+                                       EmployeeRepository employeeRepository) {
+        return args -> {
+
+            //Factory supports, semaphores, queues, list, set and more
+            var factory = new DTypeFactory(clientCache);
+
+            //Create a distributed atomic long to use a sequence Id
+            DAtomicLong empSeq = factory.createDAtomicLong("EmpSeq");
+
+            //Get Next Long and Add 1
+            var empId = String.valueOf(empSeq.getAndAdd(1));
+
+            //Generate emp with Id
+            var emp1 = JavaBeanGeneratorCreator.of(Employee.class).create();
+            emp1.setId(empId);
+            log.info("Emp ID: {}", emp1.getId());
+
+            //save employee using sequence atomic long
+            employeeRepository.save(emp1);
+
+            //Save another employee
+            var emp2 = JavaBeanGeneratorCreator.of(Employee.class).create();
+
+            //Get Next Sequence
+            empId = String.valueOf(empSeq.getAndAdd(1));
+            emp2.setId(empId);
+            log.info("Emp ID: {}", emp2.getId());
+
+            //Save another employee
+            employeeRepository.save(emp2);
+
+            //Log Results
+            log.info("Emp 1: {} \n\n\n Emp 2: {}",
+                    employeeRepository.findById(emp1.getId()),
+                    employeeRepository.findById(emp2.getId()));
+
+        };
+    }
+
+//    @Bean
     ApplicationRunner putGet(EmployeeRepository employeeRepository, @Qualifier("employeeTemplate") GemfireTemplate template) {
         return args -> {
             var emp = JavaBeanGeneratorCreator.of(Employee.class).create();
@@ -58,7 +100,7 @@ public class GemFireConfig {
             var foundEmp = employeeRepository.findById(emp.getId()).get();
 
             //Check ContainKey
-            Assert.isTrue(template.containsKey(foundEmp.getId()),"Contains Id");
+            Assert.isTrue(template.containsKeyOnServer(foundEmp.getId()),"Contains Id");
 
 
             // Query example

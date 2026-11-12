@@ -41,7 +41,7 @@ dependencies {
 	implementation 'com.github.nyla-solutions:nyla.solutions.core:2.6.0'
 	// if using continuous queries
 	implementation "com.vmware.gemfire:gemfire-cq:$vmwareGemFireVersion"
-	implementation 'dev.gemfire:gemfire-distributed-types:1.0.0'
+	implementation 'com.vmware.gemfire:gemfire-distributed-types:2.0.1'
 }
 
 dependencies {
