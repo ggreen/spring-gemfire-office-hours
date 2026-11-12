@@ -24,7 +24,7 @@ base {
 }
 
 ext {
-    gemFireVersion = '10.1.0'
+    gemFireVersion = '10.3.4'
 }
 
 repositories {
@@ -42,7 +42,7 @@ repositories {
 dependencies {
     implementation project(':components:employee-domain')
 
-    implementation 'com.github.nyla-solutions:nyla.solutions.core:2.5.1'
+    implementation 'com.github.nyla-solutions:nyla.solutions.core:2.6.0'
 
     compileOnly group: 'com.vmware.gemfire', name: 'gemfire-core', version: gemFireVersion
     compileOnly 'org.apache.logging.log4j:log4j-api:2.20.0'
