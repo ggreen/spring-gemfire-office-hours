@@ -22,7 +22,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
-@RestController
+//@RestController
 @RequiredArgsConstructor
 @RequestMapping("ai")
 @Slf4j

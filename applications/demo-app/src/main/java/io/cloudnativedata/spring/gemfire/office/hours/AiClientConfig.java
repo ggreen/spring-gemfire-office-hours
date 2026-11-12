@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-@Configuration
+//@Configuration
 @EnableAsync
 public class AiClientConfig {
     @Value("classpath:csv/employee-knowledge.csv")

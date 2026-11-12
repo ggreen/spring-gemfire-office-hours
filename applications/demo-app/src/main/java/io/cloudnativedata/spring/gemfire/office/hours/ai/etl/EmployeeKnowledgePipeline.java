@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 @Slf4j
 public class EmployeeKnowledgePipeline implements Runnable {

@@ -18,7 +18,7 @@ deployment/scripts/start-gemfire-containers.sh
 or Option 2 (locally) 
 
 ```shell
-deployment/scripts/start-local.sh
+deployment/scripts/start-local-gfsh-gf.sh
 ```
 
 
@@ -191,6 +191,9 @@ public class GemFireConfig {
 
 }
 ```
+
+
+
 
 
 https://blogs.vmware.com/tanzu/introducing-vmware-gemfire-10-ga/

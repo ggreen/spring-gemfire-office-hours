@@ -2,13 +2,12 @@ package io.cloudnativedata.spring.gemfire.office.hours.ai.etl;
 
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
 import org.springframework.ai.document.Document;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-@Component
+//@Component
 public class EmployeesToDocumentListConverter implements Function<Iterable<Employee>, List<Document>> {
     @Override
     public List<Document> apply(Iterable<Employee> employees) {
