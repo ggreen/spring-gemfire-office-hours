@@ -21,13 +21,15 @@ repositories {
 ext {
 	set('springAiVersion', "2.0.1")
 	springBootForGemFireVersion = '2.0.0'
-	vmwareGemFireVersion = '10.3.4'
+	vmwareGemFireVersion = '10.2.0'
+//	vmwareGemFireVersion = '10.3.4'
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-rest-test'
-	implementation "com.vmware.gemfire:spring-boot-4.1-gemfire-10.3:$springBootForGemFireVersion"
+//	implementation "com.vmware.gemfire:spring-boot-4.1-gemfire-10.3:$springBootForGemFireVersion"
+	implementation "com.vmware.gemfire:spring-boot-4.0-gemfire-10.2:$springBootForGemFireVersion"
 	implementation "com.vmware.gemfire:gemfire-core:$vmwareGemFireVersion"
 	implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
 //	implementation 'org.springframework.ai:spring-ai-advisors-vector-store'

@@ -29,24 +29,25 @@ wait_for_port() {
 
 
 cd $ROOT_DIR/runtime/locator1
-java -Xms512m -Xmx512m -Dgemfire.prometheus.metrics.emission=Default -Dgemfire.prometheus.metrics.port=7977 -Dgemfire.prometheus.metrics.host=127.0.0.1 -Dgemfire.prometheus.metrics.interval=15s  -Dgemfire.enable-management-rest-service=true -Dgemfire.enable-cluster-configuration=true   -Dgemfire.start-rest-api=true -Dgemfire.tcp-port=40000 -jar $GEMFIRE_JAR_DIR/vmware-gemfire-$GF_VERSION.jar locator --name=locator1 --port=10334  --dir=$PWD/runtime/locator1 --bind-address=127.0.0.1 --modules="$GF_EXTENSIONS_DIR/gemfire-for-grpc-1.0.0.gfm:$GF_EXTENSIONS_DIR/gemfire-distributed-types-2.0.1.gfm:$GF_EXTENSIONS_DIR/vmware-gemfire-vectordb-2.0.1.gfm"  &
+java -Xms512m -Xmx512m -Dgemfire.prometheus.metrics.emission=Default -Dgemfire.prometheus.metrics.port=7977 -Dgemfire.prometheus.metrics.host=127.0.0.1 -Dgemfire.prometheus.metrics.interval=15s  -Dgemfire.enable-management-rest-service=true -Dgemfire.enable-cluster-configuration=true   -Dgemfire.start-rest-api=true -Dgemfire.tcp-port=40000 -jar $GEMFIRE_JAR_DIR/vmware-gemfire-$GF_VERSION.jar locator --name=locator1 --port=10334  --dir=$PWD/runtime/locator1 --bind-address=127.0.0.1 --modules="$GF_EXTENSIONS_DIR/gemfire-for-grpc-1.0.0.gfm:$GF_EXTENSIONS_DIR/gemfire-distributed-types-2.0.1.gfm:$GF_EXTENSIONS_DIR/vmware-gemfire-vectordb-1.2.3.gfm"  &
 
 
 wait_for_port localhost 7977
 
 echo "Configuring PDX"
+java -jar $GEMFIRE_JAR_DIR/vmware-gemfire-gfsh-$GF_VERSION.jar  -e "connect" -e "create disk-store --name=DEFAULT --segments=1 --dir=./default"
 java -jar $GEMFIRE_JAR_DIR/vmware-gemfire-gfsh-$GF_VERSION.jar -e "connect" -e "configure pdx --read-serialized=true --disk-store"
 
 echo "Starting server1"
 cd $ROOT_DIR/runtime/server1-spring-office-hours
-java -Xms1g -Xmx1g -Dgemfire.prometheus.metrics.emission=Default -Dgemfire.prometheus.metrics.port=7978 -Dgemfire.tcp-port=40001 -Dgemfire.prometheus.metrics.host=127.0.0.1 -Dgemfire.prometheus.metrics.interval=15s -Dgemfire.enable-management-rest-service=true -Dgemfire.enable-cluster-configuration=true -XX:+AlwaysPreTouch -jar $GEMFIRE_JAR_DIR/vmware-gemfire-${GF_VERSION}.jar server --name=server1-spring-office-hours --locators="127.0.0.1[10334]"    --modules="$GF_EXTENSIONS_DIR/gemfire-for-grpc-1.0.0.gfm:$GF_EXTENSIONS_DIR/gemfire-distributed-types-2.0.1.gfm:$GF_EXTENSIONS_DIR/vmware-gemfire-vectordb-2.0.1.gfm"   --server-port=2882  --bind-address=127.0.0.1  --http-service-port=8080  --start-rest-api=true --dir=$PWD/runtime/server1-spring-office-hours &
+java -Xms1g -Xmx1g -Dgemfire.prometheus.metrics.emission=Default -Dgemfire.prometheus.metrics.port=7978 -Dgemfire.tcp-port=40001 -Dgemfire.prometheus.metrics.host=127.0.0.1 -Dgemfire.prometheus.metrics.interval=15s -Dgemfire.enable-management-rest-service=true -Dgemfire.enable-cluster-configuration=true -XX:+AlwaysPreTouch -jar $GEMFIRE_JAR_DIR/vmware-gemfire-${GF_VERSION}.jar server --name=server1-spring-office-hours --locators="127.0.0.1[10334]"    --modules="$GF_EXTENSIONS_DIR/gemfire-for-grpc-1.0.0.gfm:$GF_EXTENSIONS_DIR/gemfire-distributed-types-2.0.1.gfm:$GF_EXTENSIONS_DIR/vmware-gemfire-vectordb-1.2.3.gfm"   --server-port=2882  --bind-address=127.0.0.1  --http-service-port=8080  --start-rest-api=true --dir=$PWD/runtime/server1-spring-office-hours &
 
 
 
 echo "start server 2"
 
 cd $ROOT_DIR/runtime/server2-spring-office-hours
-java -Xms1g -Xmx1g -Dgemfire.prometheus.metrics.emission=Default -Dgemfire.prometheus.metrics.port=7973 -Dgemfire.tcp-port=40003 -Dgemfire.prometheus.metrics.host=127.0.0.1 -Dgemfire.prometheus.metrics.interval=15s -Dgemfire.enable-management-rest-service=true -Dgemfire.enable-cluster-configuration=true -XX:+AlwaysPreTouch -jar $GEMFIRE_JAR_DIR/vmware-gemfire-${GF_VERSION}.jar server --name=server2-spring-office-hours --locators="127.0.0.1[10334]"   --modules="$GF_EXTENSIONS_DIR/gemfire-for-grpc-1.0.0.gfm:$GF_EXTENSIONS_DIR/gemfire-distributed-types-2.0.1.gfm:$GF_EXTENSIONS_DIR/vmware-gemfire-vectordb-2.0.1.gfm"   --server-port=2883 --bind-address=127.0.0.1 --http-service-port=8083 --start-rest-api=true --dir=$PWD/runtime/server2-spring-office-hours &
+java -Xms1g -Xmx1g -Dgemfire.prometheus.metrics.emission=Default -Dgemfire.prometheus.metrics.port=7973 -Dgemfire.tcp-port=40003 -Dgemfire.prometheus.metrics.host=127.0.0.1 -Dgemfire.prometheus.metrics.interval=15s -Dgemfire.enable-management-rest-service=true -Dgemfire.enable-cluster-configuration=true -XX:+AlwaysPreTouch -jar $GEMFIRE_JAR_DIR/vmware-gemfire-${GF_VERSION}.jar server --name=server2-spring-office-hours --locators="127.0.0.1[10334]"   --modules="$GF_EXTENSIONS_DIR/gemfire-for-grpc-1.0.0.gfm:$GF_EXTENSIONS_DIR/gemfire-distributed-types-2.0.1.gfm:$GF_EXTENSIONS_DIR/vmware-gemfire-vectordb-1.2.3.gfm"   --server-port=2883 --bind-address=127.0.0.1 --http-service-port=8083 --start-rest-api=true --dir=$PWD/runtime/server2-spring-office-hours &
 
 wait_for_port localhost 8080
 wait_for_port localhost 8083

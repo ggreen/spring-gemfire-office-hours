@@ -6,8 +6,6 @@ Prerequisite
 
 ## Getting Start
 
-
-
 start gemfire
 
 Option 1 (Podman required)
