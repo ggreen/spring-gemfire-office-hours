@@ -1,56 +1,60 @@
 package io.cloudNativeData.spring.gemfire.office.hours.functions;
 
-import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
-import io.cloudnativedata.spring.gemfire.office.hours.domain.dto.JobPromotion;
-import org.apache.geode.CopyHelper;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
-import org.apache.geode.cache.execute.FunctionException;
 import org.apache.geode.cache.execute.RegionFunctionContext;
-import org.apache.geode.cache.query.*;
+import org.apache.geode.pdx.PdxInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-
-import static org.apache.geode.CopyHelper.copy;
+import java.util.Map;
 
 /**
  *
  * @author Gregory Green
  */
-public class PromoteEmployeeFunction implements Function<JobPromotion> {
+public class PromoteEmployeeFunction implements Function<String[]> {
 
     private Logger log = LogManager.getLogger(PromoteEmployeeFunction.class);
-    private final java.util.function.Function<Employee, Employee> copier;
-
-    public PromoteEmployeeFunction() {
-        this(CopyHelper::copy);
-    }
-
-    public PromoteEmployeeFunction(java.util.function.Function<Employee, Employee> copier) {
-        this.copier = copier;
-    }
 
     @Override
-    public void execute(FunctionContext<JobPromotion> fc) {
-       var rfc = (RegionFunctionContext<JobPromotion>) fc;
+    public void execute(FunctionContext<String[]> fc) {
+       var rfc = (RegionFunctionContext<String[]>) fc;
 
-        Region<String,Employee> region = rfc.getDataSet();
+        Region<String,PdxInstance> region = rfc.getDataSet();
 
         var keys = rfc.getFilter();
         var employees = region.getAll(keys);
         var args = rfc.getArguments();
 
         var jobPromotion = fc.getArguments();
+        BigDecimal salary = BigDecimal.valueOf(Long.parseLong(args[0]));
+        String title = args[1];
 
-        for(Employee employee : employees.values()){
-            var updateEmployee = copier.apply(employee);
-            updateEmployee.setSalary(jobPromotion.getSalary());
-            updateEmployee.setJobTitle(jobPromotion.getTitle());
+        for(Map.Entry<String,PdxInstance> empEntry : employees.entrySet()){
+            var writer = empEntry.getValue().createWriter();
 
-            region.put(employee.getId(), updateEmployee);
+            writer.setField("salary", salary);
+            writer.setField("jobTitle", title);
+
+            region.put(empEntry.getKey(), writer);
         }
+    }
+
+    @Override
+    public String getId() {
+        return "promoteEmployee";
+    }
+
+    @Override
+    public boolean hasResult() {
+        return false;
+    }
+
+    @Override
+    public boolean isHA() {
+        return false;
     }
 }

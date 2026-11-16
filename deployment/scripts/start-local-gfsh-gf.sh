@@ -17,3 +17,6 @@ $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=AiCache --type=PART
 
 
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create lucene index --name=employeeIndex --region=/Employee --field=notes,jobTitle,firstName,lastName,dept"
+
+
+$GEMFIRE_HOME/bin/gfsh -e "connect" -e "deploy --jar=$PWD/components/server/demo-functions/build/libs/demo-functions-0.0.1-SNAPSHOT.jar"
