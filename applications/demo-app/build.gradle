@@ -27,7 +27,7 @@ ext {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	testImplementation 'org.springframework.boot:spring-boot-starter-data-rest-test'
+//	implementation 'org.springframework.ai:spring-ai-starter-model-openai'
 //	implementation "com.vmware.gemfire:spring-boot-4.1-gemfire-10.3:$springBootForGemFireVersion"
 	implementation "com.vmware.gemfire:spring-boot-4.0-gemfire-10.2:$springBootForGemFireVersion"
 	implementation "com.vmware.gemfire:gemfire-core:$vmwareGemFireVersion"
@@ -44,6 +44,7 @@ dependencies {
 	// if using continuous queries
 	implementation "com.vmware.gemfire:gemfire-cq:$vmwareGemFireVersion"
 	implementation 'com.vmware.gemfire:gemfire-distributed-types:2.0.1'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-rest-test'
 }
 
 dependencies {
