@@ -1,6 +1,8 @@
 package io.cloudnativedata.spring.gemfire.office.hours;
 
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
+import io.cloudnativedata.spring.gemfire.office.hours.repository.EmployeeRepository;
+import io.cloudnativedata.spring.gemfire.office.hours.repository.PromoteEmployeeExecution;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.client.ClientCache;
@@ -15,15 +17,20 @@ import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnableContinuousQueries;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
+import org.springframework.data.gemfire.function.config.EnableGemfireFunctionExecutions;
+import org.springframework.util.Assert;
 
+import java.math.BigDecimal;
 import java.util.Map;
-import java.util.SortedMap;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 
 @Configuration
 @ClientCacheApplication(subscriptionEnabled = true, socketBufferSize = 100000)
 @EnableContinuousQueries
+@EnableGemfireFunctionExecutions
 @Slf4j
 @EnablePdx(serializerBeanName="employSerializer")
 @EnableGemfireCaching
@@ -57,55 +64,33 @@ public class GemFireConfig {
         return regionBean;
     }
 
+
     @Bean
-    ApplicationRunner gfFullTextSearch(ClientCache cache) {
+    ApplicationRunner gfFullTextSearch(PromoteEmployeeExecution promoteFunction, EmployeeRepository employeeRepository) {
         return args -> {
-            var luceneService = LuceneServiceProvider.get(cache);
-            var queryFactory = luceneService.createLuceneQueryFactory().setLimit(10);
 
-            var searches = new TreeMap<String, String>(Map.of(
-                    "1. Multi-Field Boolean + Relevance Boosting",
-                    //^3 controls ranking order (Boost by 3)
-                    """
-                            dept:Tanzu AND notes:"in-memory" AND (jobTitle:"Product Manager"^3 OR jobTitle:Advocate)
-                            """,
+            var employees = employeeRepository.findByDept("Tanzu");
+            var title = "VP Level";
+            var newSalary = BigDecimal.valueOf(10000000);
 
-                    //Lucene calculates similarity using Damerau-Levenshtein distance
-                    "2. Fuzzy Typo-Tolerant Search (~)",
-                    "lastName:Iberkleid~1 OR notes:observablity~1",
+            promoteFunction.promoteEmployee(newSalary.toString(),title, employees.stream()
+                    .map(Employee::getId).collect(Collectors.toSet()));
 
-                    "3. Proximity & Phrase Matching",
-                    //~2 allows flexibility in both word spacing and word order:
-                    """
-                            notes:"mission critical"~2
-                            """,
 
-                    "4. Wildcard + Negation Query",
-                    "dept:Administration* AND NOT dept:Tanzu"
-            ));
+             employees = employeeRepository.findByDept("Tanzu");
 
-            for (var entry : searches.entrySet()) {
-                LuceneQuery<String, Employee> query = queryFactory
-                        .create("employeeIndex",
-                                "Employee",
-                                entry.getValue(),
-                                "notes");
+             for (Employee employee : employees) {
+                 log.info("Received employee: {}",employee);
 
-                log.info("=== {} ===", entry.getKey());
+                 Assert.isTrue(employee.getJobTitle().equals(title),
+                         "VP Level has to be VP Level");
 
-                for (LuceneResultStruct<String, Employee> result : query.findResults()) {
-                    var employee = result.getValue();
-                    log.info("Received: Pattern:[{}] Query: [{}] |  [Score: {}] \n Received: {} {} | {} ({}) -> {}",
-                            entry.getKey(),
-                            entry.getValue(),
-                            String.format("%.4f", result.getScore()),
-                            employee.getFirstName(),
-                            employee.getLastName(),
-                            employee.getJobTitle(),
-                            employee.getDept(),
-                            employee.getNotes());
-                }
-            }
+                 Assert.isTrue(employee.getSalary().equals(newSalary),
+                         "Salary set");
+
+             }
+
+
         };
     }
 }

@@ -21,7 +21,7 @@ class PromoteEmployeeFunctionTest {
 
     private PromoteEmployeeFunction subject;
     @Mock
-    private RegionFunctionContext<String[]> rfc;
+    private RegionFunctionContext<Object[]> rfc;
     @Mock
     private Region<String, PdxInstance> region;
     private final Set<String> filter = Set.of("1","2");

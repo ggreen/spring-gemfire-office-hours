@@ -11,17 +11,19 @@ import org.apache.logging.log4j.Logger;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import static java.lang.String.valueOf;
+
 /**
  *
  * @author Gregory Green
  */
-public class PromoteEmployeeFunction implements Function<String[]> {
+public class PromoteEmployeeFunction implements Function<Object[]> {
 
     private Logger log = LogManager.getLogger(PromoteEmployeeFunction.class);
 
     @Override
-    public void execute(FunctionContext<String[]> fc) {
-       var rfc = (RegionFunctionContext<String[]>) fc;
+    public void execute(FunctionContext<Object[]> fc) {
+       var rfc = (RegionFunctionContext<Object[]>) fc;
 
         Region<String,PdxInstance> region = rfc.getDataSet();
 
@@ -30,8 +32,8 @@ public class PromoteEmployeeFunction implements Function<String[]> {
         var args = rfc.getArguments();
 
         var jobPromotion = fc.getArguments();
-        BigDecimal salary = BigDecimal.valueOf(Long.parseLong(args[0]));
-        String title = args[1];
+        BigDecimal salary = BigDecimal.valueOf(Long.parseLong(valueOf(args[0])));
+        String title = valueOf(args[1]);
 
         for(Map.Entry<String,PdxInstance> empEntry : employees.entrySet()){
             var writer = empEntry.getValue().createWriter();
