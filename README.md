@@ -1,5 +1,10 @@
 # spring-gemfire-office-hours
 
+
+![spring_gemfire.png](docs/imgs/spring_gemfire.png)
+
+![spring-gemfire-patterns.png](docs/imgs/spring-gemfire-patterns.png)
+
 Prerequisite 
 
 - GemFire binaries and Java 21 or higher installed
