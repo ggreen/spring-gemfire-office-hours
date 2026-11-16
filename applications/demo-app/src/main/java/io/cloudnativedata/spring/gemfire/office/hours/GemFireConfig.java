@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @EnableContinuousQueries
 @EnableGemfireFunctionExecutions
 @Slf4j
-@EnablePdx(serializerBeanName="employSerializer")
+@EnablePdx(serializerBeanName = "employSerializer")
 @EnableGemfireCaching
 public class GemFireConfig {
 
@@ -41,8 +41,8 @@ public class GemFireConfig {
     }
 
     @Bean("Transaction")
-    ClientRegionFactoryBean<Integer, Map<?,?>> transactionRegion(ClientCache cache) {
-        var regionBean = new ClientRegionFactoryBean<Integer, Map<?,?>>();
+    ClientRegionFactoryBean<Integer, Map<?, ?>> transactionRegion(ClientCache cache) {
+        var regionBean = new ClientRegionFactoryBean<Integer, Map<?, ?>>();
         regionBean.setCache(cache);
         regionBean.setName("Transaction");
         regionBean.setDataPolicy(DataPolicy.EMPTY);
@@ -59,35 +59,42 @@ public class GemFireConfig {
         return regionBean;
     }
 
-
-        @Bean
-            ApplicationRunner gfFunction(PromoteEmployeeExecution promoteFunction,
-                                         EmployeeRepository employeeRepository) {
-                return args -> {
-
-                    var employees = employeeRepository.findByDept("Tanzu");
-                    var title = "VP Level";
-                    var newSalary = BigDecimal.valueOf(10000000);
-
-                    promoteFunction.promoteEmployee(newSalary.toString(),title, employees.stream()
-                            .map(Employee::getId).collect(Collectors.toSet()));
+    @Bean
+    ClientRegionFactoryBean<String, Employee> springCache(ClientCache cache) {
+        var regionBean = new ClientRegionFactoryBean<String, Employee>();
+        regionBean.setCache(cache);
+        regionBean.setName("SpringCache");
+        regionBean.setDataPolicy(DataPolicy.EMPTY);
+        return regionBean;
+    }
 
 
-                     employees = employeeRepository.findByDept("Tanzu");
+    @Bean
+    ApplicationRunner gfFunction(PromoteEmployeeExecution promoteFunction,
+                                 EmployeeRepository employeeRepository) {
+        return args -> {
 
-                     for (var employee : employees) {
-                         log.info("Received employee: {}",employee);
+            var employees = employeeRepository.findByDept("Tanzu");
+            var title = "VP Level";
+            var newSalary = BigDecimal.valueOf(10000000);
 
-                         Assert.isTrue(employee.getJobTitle().equals(title),
-                                 "VP Level has to be VP Level");
-
-                         Assert.isTrue(employee.getSalary().equals(newSalary),
-                                 "Salary set");
-
-                     }
+            promoteFunction.promoteEmployee(newSalary.toString(), title, employees.stream()
+                    .map(Employee::getId).collect(Collectors.toSet()));
 
 
-                };
+            employees = employeeRepository.findByDept("Tanzu");
+
+            for (var employee : employees) {
+                log.info("Received employee: {}", employee);
+
+                Assert.isTrue(employee.getJobTitle().equals(title),
+                        "VP Level has to be VP Level");
+
+                Assert.isTrue(employee.getSalary().equals(newSalary),
+                        "Salary set");
+
             }
+        };
+    }
 }
 

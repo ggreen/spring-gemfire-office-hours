@@ -12,6 +12,9 @@ $GEMFIRE_HOME/bin/gfsh -e "start server --name=server1-spring-office-hours --loc
 $GEMFIRE_HOME/bin/gfsh -e "start server --name=server2-spring-office-hours --locators=127.0.0.1[10334] --initial-heap=4g --max-heap=4g --server-port=2883 --J=-Dgemfire.prometheus.metrics.emission=Default --J=-Dgemfire.prometheus.metrics.port=7973 --J=-Dgemfire.tcp-port=40003 --J=-Dgemfire.prometheus.metrics.host=127.0.0.1 --J=-Dgemfire.prometheus.metrics.interval=15s --bind-address=127.0.0.1  --http-service-port=8083 --J=-Dgemfire.enable-management-rest-service=true --J=-Dgemfire.enable-cluster-configuration=true --J=-XX:+AlwaysPreTouch --start-rest-api=true --socket-buffer-size=100000"
 
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=Transaction --type=PARTITION --skip-if-exists"
+
+$GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=SpringCache --type=REPLICATE --skip-if-exists --enable-statistics=true --entry-time-to-live-expiration=60"
+
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=Employee --type=PARTITION_REDUNDANT --skip-if-exists"
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=AiCache --type=PARTITION_REDUNDANT --skip-if-exists"
 
