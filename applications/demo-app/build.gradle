@@ -33,7 +33,7 @@ dependencies {
 	implementation 'org.springframework.ai:spring-ai-vector-store-advisor'
 	implementation "com.vmware.gemfire:gemfire-cq:$vmwareGemFireVersion"
 
-	implementation "com.vmware.gemfire:gemfire-core:$vmwareGemFireVersion"
+	implementation "com.vmware.gemfire:gemfire-search:1.2.0"
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 
 	implementation 'com.github.nyla-solutions:nyla.solutions.core:2.6.0'

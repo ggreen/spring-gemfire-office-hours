@@ -14,3 +14,6 @@ $GEMFIRE_HOME/bin/gfsh -e "start server --name=server2-spring-office-hours --loc
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=Transaction --type=PARTITION --skip-if-exists"
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=Employee --type=PARTITION_REDUNDANT --skip-if-exists"
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=AiCache --type=PARTITION_REDUNDANT --skip-if-exists"
+
+
+$GEMFIRE_HOME/bin/gfsh -e "connect" -e "create lucene index --name=employeeIndex --region=/Employee --field=notes,jobTitle,firstName,lastName,dept"
