@@ -6,9 +6,6 @@ import io.cloudnativedata.spring.gemfire.office.hours.repository.PromoteEmployee
 import lombok.extern.slf4j.Slf4j;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.cache.lucene.LuceneQuery;
-import org.apache.geode.cache.lucene.LuceneResultStruct;
-import org.apache.geode.cache.lucene.LuceneServiceProvider;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +19,6 @@ import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 
@@ -65,33 +60,34 @@ public class GemFireConfig {
     }
 
 
-    @Bean
-    ApplicationRunner gfFullTextSearch(PromoteEmployeeExecution promoteFunction, EmployeeRepository employeeRepository) {
-        return args -> {
+        @Bean
+            ApplicationRunner gfFunction(PromoteEmployeeExecution promoteFunction,
+                                         EmployeeRepository employeeRepository) {
+                return args -> {
 
-            var employees = employeeRepository.findByDept("Tanzu");
-            var title = "VP Level";
-            var newSalary = BigDecimal.valueOf(10000000);
+                    var employees = employeeRepository.findByDept("Tanzu");
+                    var title = "VP Level";
+                    var newSalary = BigDecimal.valueOf(10000000);
 
-            promoteFunction.promoteEmployee(newSalary.toString(),title, employees.stream()
-                    .map(Employee::getId).collect(Collectors.toSet()));
-
-
-             employees = employeeRepository.findByDept("Tanzu");
-
-             for (Employee employee : employees) {
-                 log.info("Received employee: {}",employee);
-
-                 Assert.isTrue(employee.getJobTitle().equals(title),
-                         "VP Level has to be VP Level");
-
-                 Assert.isTrue(employee.getSalary().equals(newSalary),
-                         "Salary set");
-
-             }
+                    promoteFunction.promoteEmployee(newSalary.toString(),title, employees.stream()
+                            .map(Employee::getId).collect(Collectors.toSet()));
 
 
-        };
-    }
+                     employees = employeeRepository.findByDept("Tanzu");
+
+                     for (var employee : employees) {
+                         log.info("Received employee: {}",employee);
+
+                         Assert.isTrue(employee.getJobTitle().equals(title),
+                                 "VP Level has to be VP Level");
+
+                         Assert.isTrue(employee.getSalary().equals(newSalary),
+                                 "Salary set");
+
+                     }
+
+
+                };
+            }
 }
 
