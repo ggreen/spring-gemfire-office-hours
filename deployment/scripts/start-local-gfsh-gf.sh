@@ -1,4 +1,7 @@
 #export GEMFIRE_HOME=/Users/devtools/repositories/IMDG/gemfire/vmware-gemfire-10.2.0
+
+PROJECT_HOME=$PWD
+
 cd $GEMFIRE_HOME/bin
 
 rm -rf $GEMFIRE_HOME/bin/*spring-office-hours*
@@ -22,4 +25,4 @@ $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --name=AiCache --type=PART
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create lucene index --name=employeeIndex --region=/Employee --field=notes,jobTitle,firstName,lastName,dept"
 
 
-$GEMFIRE_HOME/bin/gfsh -e "connect" -e "deploy --jar=$PWD/components/server/demo-functions/build/libs/demo-functions-0.0.1-SNAPSHOT.jar"
+$GEMFIRE_HOME/bin/gfsh -e "connect" -e "deploy --jar=$PROJECT_HOME/components/server/demo-functions/build/libs/demo-functions-0.0.1-SNAPSHOT.jar"

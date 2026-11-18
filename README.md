@@ -5,6 +5,18 @@
 
 ![spring-gemfire-patterns.png](docs/imgs/spring-gemfire-patterns.png)
 
+Demos
+
+- Look aside cache (http://localhost:9090)
+- Put/Get using templates
+- Repository Put/Get
+- Perf Test
+- Queries 
+- Full Text Search
+- Continuous Queries
+- Vector Load
+- RAG Search
+
 Prerequisite 
 
 - GemFire binaries and Java 21 or higher installed

@@ -1,11 +1,15 @@
 package io.cloudnativedata.spring.gemfire.office.hours;
 
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
-import io.cloudnativedata.spring.gemfire.office.hours.repository.EmployeeRepository;
-import io.cloudnativedata.spring.gemfire.office.hours.repository.PromoteEmployeeExecution;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.client.ClientCache;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +19,9 @@ import org.springframework.data.gemfire.config.annotation.ClientCacheApplication
 import org.springframework.data.gemfire.config.annotation.EnableContinuousQueries;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
 import org.springframework.data.gemfire.function.config.EnableGemfireFunctionExecutions;
-import org.springframework.util.Assert;
 
-import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @Configuration
@@ -70,30 +72,50 @@ public class GemFireConfig {
 
 
     @Bean
-    ApplicationRunner gfFunction(PromoteEmployeeExecution promoteFunction,
-                                 EmployeeRepository employeeRepository) {
+    QuestionAnswerAdvisor advisor( VectorStore vectorStore){
+
+        SearchRequest searchRequest = SearchRequest
+                .builder()
+                .similarityThreshold(.75)
+                .build();
+
+        return QuestionAnswerAdvisor
+                .builder(vectorStore)
+                .searchRequest(searchRequest).build();
+    }
+
+    @Bean
+    ApplicationRunner gfRAG(VectorStore vectorStore,
+                            ChatClient.Builder chatClientBuilder,
+                            List<Advisor> advisors) {
         return args -> {
 
-            var employees = employeeRepository.findByDept("Tanzu");
-            var title = "VP Level";
-            var newSalary = BigDecimal.valueOf(10000000);
+            /// Perform a similarity search
+            List<Document> results = vectorStore.similaritySearch(
+                    SearchRequest.builder()
+                            .query("Was GemFire 10 dedicated to anyone?")
+                            .topK(1)
+                            .similarityThreshold(0.7)
+                            .build()
+            );
 
-            promoteFunction.promoteEmployee(newSalary.toString(), title, employees.stream()
-                    .map(Employee::getId).collect(Collectors.toSet()));
-
-
-            employees = employeeRepository.findByDept("Tanzu");
-
-            for (var employee : employees) {
-                log.info("Received employee: {}", employee);
-
-                Assert.isTrue(employee.getJobTitle().equals(title),
-                        "VP Level has to be VP Level");
-
-                Assert.isTrue(employee.getSalary().equals(newSalary),
-                        "Salary set");
-
+            // 4. Output the search result
+            for (Document doc : results) {
+                log.info("Found match: {} ", doc.getText());
             }
+
+            log.info("Asking using an AI Model");
+            var chatClient = chatClientBuilder.build();
+
+            var prompt = "Was GemFire 10 named after anyone";
+
+            log.info("Asking question answers for {}", prompt);
+            var response = chatClient.prompt()
+                    .user(prompt)
+                    .advisors(advisors) //use GemFire vectorDB
+                    .call().content();
+
+            log.info("Received AI Response: {}", response);
         };
     }
 }
