@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.client.ClientCache;
-import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
-import org.springframework.ai.vectorstore.SearchRequest;
-import org.springframework.ai.vectorstore.VectorStore;
+import org.apache.geode.cache.client.ClientRegionShortcut;
+import org.apache.geode.cache.client.PoolManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +26,8 @@ import java.util.Map;
 @ClientCacheApplication(subscriptionEnabled = true, socketBufferSize = 100000)
 @EnableContinuousQueries
 @EnableGemfireFunctionExecutions
-@Slf4j
 @EnablePdx(serializerBeanName = "employSerializer")
+@Slf4j
 @EnableGemfireCaching
 public class GemFireConfig {
 
@@ -49,7 +49,6 @@ public class GemFireConfig {
         return regionBean;
     }
 
-
     @Bean
     ClientRegionFactoryBean<String, Employee> aiCacheRegion(ClientCache cache) {
         var regionBean = new ClientRegionFactoryBean<String, Employee>();
@@ -68,18 +67,28 @@ public class GemFireConfig {
         return regionBean;
     }
 
+    @Value("${gemfire.cluster.2.locator.host}")
+    private String locatorCluster2Host;
 
-    @Bean
-    QuestionAnswerAdvisor advisor( VectorStore vectorStore){
+    @Value("${gemfire.cluster.2.locator.port}")
+    private int locatorCluster2Port;
 
-        SearchRequest searchRequest = SearchRequest
-                .builder()
-                .similarityThreshold(.75)
-                .build();
+    @Value("${gemfire.cluster.2.pool.name:cluster-2}")
+    private String clusterPool2Name;
 
-        return QuestionAnswerAdvisor
-                .builder(vectorStore)
-                .searchRequest(searchRequest).build();
+    @Bean("employeeTemplateCluster2")
+    GemfireTemplate employeeRegionCluster2(ClientCache clientCache)
+    {
+        var poolCluster1 = PoolManager.createFactory()
+                .addLocator(locatorCluster2Host, locatorCluster2Port)
+                .create(clusterPool2Name);
+
+        return new GemfireTemplate(clientCache
+                .<String, Employee>createClientRegionFactory(ClientRegionShortcut.PROXY)
+                .setPoolName(clusterPool2Name)
+                .setServerRegionName("Employee")
+                .create("Employee2"));
+
     }
 
     @Bean
