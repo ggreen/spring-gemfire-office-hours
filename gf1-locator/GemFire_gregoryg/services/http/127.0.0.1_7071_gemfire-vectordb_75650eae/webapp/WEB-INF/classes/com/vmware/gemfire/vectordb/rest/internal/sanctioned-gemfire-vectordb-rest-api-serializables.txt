@@ -1,1 +1,0 @@
-com/vmware/gemfire/vectordb/rest/internal/web/controllers/support/EndpointException,false,detail:java/lang/String,error:java/lang/String,status:org/springframework/http/HttpStatus
