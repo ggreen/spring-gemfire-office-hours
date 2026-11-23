@@ -2,17 +2,16 @@ package io.cloudnativedata.spring.gemfire.office.hours;
 
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
 import lombok.extern.slf4j.Slf4j;
+import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.client.ClientCache;
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
-import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.data.gemfire.cache.config.EnableGemfireCaching;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
@@ -20,7 +19,6 @@ import org.springframework.data.gemfire.config.annotation.EnableContinuousQuerie
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
 import org.springframework.data.gemfire.function.config.EnableGemfireFunctionExecutions;
 
-import java.util.List;
 import java.util.Map;
 
 
@@ -85,37 +83,17 @@ public class GemFireConfig {
     }
 
     @Bean
-    ApplicationRunner gfRAG(VectorStore vectorStore,
-                            ChatClient.Builder chatClientBuilder,
-                            List<Advisor> advisors) {
+    ApplicationRunner putGetTemplate(GemfireTemplate employeeTemplate) {
         return args -> {
+            var emp = JavaBeanGeneratorCreator.of(Employee.class).create();
 
-            /// Perform a similarity search
-            List<Document> results = vectorStore.similaritySearch(
-                    SearchRequest.builder()
-                            .query("Was GemFire 10 dedicated to anyone?")
-                            .topK(1)
-                            .similarityThreshold(0.7)
-                            .build()
-            );
+            //Put Employ
+            employeeTemplate.put(emp.getId(), emp);
 
-            // 4. Output the search result
-            for (Document doc : results) {
-                log.info("Found match: {} ", doc.getText());
-            }
+            //Get by Key
+            var foundEmp = employeeTemplate.get(emp.getId());
 
-            log.info("Asking using an AI Model");
-            var chatClient = chatClientBuilder.build();
-
-            var prompt = "Was GemFire 10 named after anyone";
-
-            log.info("Asking question answers for {}", prompt);
-            var response = chatClient.prompt()
-                    .user(prompt)
-                    .advisors(advisors) //use GemFire vectorDB
-                    .call().content();
-
-            log.info("Received AI Response: {}", response);
+            log.info("Found Received: employee {}", foundEmp);
         };
     }
 }

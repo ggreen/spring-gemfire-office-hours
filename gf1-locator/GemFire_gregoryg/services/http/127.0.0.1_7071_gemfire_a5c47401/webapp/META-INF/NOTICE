@@ -1,0 +1,60 @@
+The following copyright statements and licenses apply to open source
+software (“OSS”) distributed with the Broadcom product (the “Licensed
+Product”). The term “Broadcom” refers solely to the Broadcom Inc.
+corporate affiliate that distributes the Licensed Product. The Licensed
+Product does not necessarily use all the OSS referred to below and may
+also only use portions of a given OSS component.
+
+To the extent required under an applicable open source license, Broadcom
+will make source code available for applicable OSS upon request. Please
+send an inquiry to opensource@broadcom.com including your name, address,
+the product name and version, operating system, and the place of
+purchase.
+
+To the extent the Licensed Product includes OSS, the OSS is typically
+not owned by Broadcom. THE OSS IS PROVIDED AS IS WITHOUT WARRANTY OR
+CONDITION OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, WITHOUT
+LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE. To the full extent permitted under applicable law,
+Broadcom and its corporate affiliates disclaim all warranties and
+liability arising from or related to any use of the OSS.
+
+To the extent the Licensed Product includes OSS licensed under the GNU
+General Public License (“GPL”) or the GNU Lesser General Public License
+(“LGPL”), the use, copying, distribution and modification of the GPL OSS
+or LGPL OSS is governed, respectively, by the GPL or LGPL. A copy of the
+GPL or LGPL license may be found with the applicable OSS. Additionally,
+a copy of the GPL License or LGPL License can be found at
+https://www.gnu.org/licenses or obtained by writing to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+
+Apache Geode
+Copyright 2016-2022 The Apache Software Foundation.
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+
+The following NOTICEs pertain to software distributed with this project.
+
+stream-lib
+Copyright 2016 AddThis
+
+   This product includes software developed by AddThis.
+
+   This product also includes code adapted from:
+
+   Apache Solr (http://lucene.apache.org/solr/)
+   Copyright 2014 The Apache Software Foundation
+
+Spring Framework
+Copyright (c) 2002-2018 Pivotal, Inc.
+
+  This product is licensed to you under the Apache License, Version 2.0
+  (the "License"). You may not use this product except in compliance with
+  the License.
+  
+  This product may include a number of subcomponents with separate
+  copyright notices and license terms. Your use of the source code for
+  these subcomponents is subject to the terms and conditions of the
+  subcomponent's license, as noted in the license.txt file.
