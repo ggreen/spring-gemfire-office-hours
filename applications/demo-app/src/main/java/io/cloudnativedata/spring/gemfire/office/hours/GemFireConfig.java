@@ -67,30 +67,6 @@ public class GemFireConfig {
         return regionBean;
     }
 
-    @Value("${gemfire.cluster.2.locator.host}")
-    private String locatorCluster2Host;
-
-    @Value("${gemfire.cluster.2.locator.port}")
-    private int locatorCluster2Port;
-
-    @Value("${gemfire.cluster.2.pool.name:cluster-2}")
-    private String clusterPool2Name;
-
-    @Bean("employeeTemplateCluster2")
-    GemfireTemplate employeeRegionCluster2(ClientCache clientCache)
-    {
-        var poolCluster1 = PoolManager.createFactory()
-                .addLocator(locatorCluster2Host, locatorCluster2Port)
-                .create(clusterPool2Name);
-
-        return new GemfireTemplate(clientCache
-                .<String, Employee>createClientRegionFactory(ClientRegionShortcut.PROXY)
-                .setPoolName(clusterPool2Name)
-                .setServerRegionName("Employee")
-                .create("Employee2"));
-
-    }
-
     @Bean
     ApplicationRunner putGetTemplate(GemfireTemplate employeeTemplate) {
         return args -> {

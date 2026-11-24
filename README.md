@@ -208,6 +208,13 @@ public class GemFireConfig {
 ```
 
 
+Stop a single server
+
+
+```shell
+$GEMFIRE_HOME/bin/gfsh -e "connect" -e "stop server --name=spring-gf-wan1-server"
+```
+
 
 
 

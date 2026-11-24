@@ -6,11 +6,13 @@ import io.cloudnativedata.spring.gemfire.office.hours.repository.fallback.Employ
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Profile("wan")
 public class EmployeeActiveActiveService {
 
     private final EmployeeRepository repository;
@@ -23,11 +25,11 @@ public class EmployeeActiveActiveService {
                 () -> repository.findById(id).orElseThrow(),
                 e -> {
 
-                    log.error("Error finding employee by id {} ERROR=" + e, id);
-
                     log.info("Getting emp from fallback");
 
-                    return employeeFallBackRepository.findById(id).orElseThrow();
+                    var found = employeeFallBackRepository.findById(id).orElseThrow();
+                    log.info("Returning Received employee from fallback");
+                    return found;
                 }
         );
     }

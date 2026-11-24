@@ -11,10 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,18 +40,22 @@ class EmployeeActiveActiveServiceTest {
                 readCircuitBreaker,writeCircuitBreaker);
     }
 
-    @Test
-    void read() {
-        when(repository.findById(anyString())).thenReturn(Optional.of(emp));
 
-        var actual = subject.findEmployeeById(emp.getId());
+    @Test
+    void getFromRepository() {
+
+        when(readCircuitBreaker.run(any(),any())).thenReturn(emp);
+
+        var actual = subject
+                .findEmployeeById(emp.getId());
+
         assertThat(actual).isEqualTo(emp);
     }
 
     @Test
-    void save() {
+    void saveFromRepositoryFallback() {
         subject.saveEmployee(emp);
 
-        verify(repository).save(emp);
+        verify(writeCircuitBreaker).run(any(),any());
     }
 }
