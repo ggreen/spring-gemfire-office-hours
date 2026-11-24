@@ -2,6 +2,8 @@ package io.cloudnativedata.spring.gemfire.office.hours;
 
 import io.cloudnativedata.spring.gemfire.office.hours.domain.Employee;
 import io.cloudnativedata.spring.gemfire.office.hours.service.EmployeeActiveActiveService;
+import io.github.resilience4j.retry.Retry;
+import io.github.resilience4j.retry.RetryConfig;
 import lombok.extern.slf4j.Slf4j;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.apache.geode.cache.client.ClientCache;
@@ -14,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.util.Assert;
+
+import java.time.Duration;
 
 
 @Configuration
@@ -51,6 +55,16 @@ public class GemFireWanConfig {
     @Value("${app.wan.data.count:20}")
     private int count;
 
+    // 1. Configure the retry behavior
+    RetryConfig config = RetryConfig.custom()
+            .maxAttempts(3)
+            .waitDuration(Duration.ofMillis(500))
+            // Assert.isTrue throws IllegalArgumentException on failure
+            .retryExceptions(IllegalArgumentException.class)
+            .build();
+
+    Retry retry = Retry.of("employeeLookupRetry", config);
+
     @Bean
     ApplicationRunner wanDemo(EmployeeActiveActiveService service)
     {
@@ -64,6 +78,7 @@ public class GemFireWanConfig {
 
             var count = 1;
 
+
             while (true) {
                 var start = System.currentTimeMillis();
                 for (Employee employee : employees) {
@@ -75,8 +90,11 @@ public class GemFireWanConfig {
                     service.saveEmployee(found);
 
 
-                    var actual = service.findEmployeeById(employee.getId());
-                    Assert.isTrue(found.equals(actual),"Found different employee ids");
+                    // 2. Decorate and execute your code
+                    Retry.decorateRunnable(retry, () -> {
+                        var actual = service.findEmployeeById(employee.getId());
+                        Assert.isTrue(found.equals(actual), "Found different employee ids");
+                    }).run();
 
                     log.info("Saved with Last Name {}",found.getLastName());
 
